@@ -1,0 +1,13 @@
+{
+  "name": "genesis-vision-core",
+  "version": "1.0.0",
+  "description": "Genesis Vision contracts for Decentralized Asset Management",
+  "main": "index.js",
+  "repository": "https://github.com/GenesisVision/genesis-vision-core",
+  "author": "Ruslan Kamenskiy <r.kamenskiy@genesis.vision>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.0.0",
+    "truffle-assertions": "^0.9.2"
+  }
+}
