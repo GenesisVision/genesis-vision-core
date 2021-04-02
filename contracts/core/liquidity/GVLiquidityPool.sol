@@ -30,11 +30,15 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
 {
     using Orders for Orders.Order;
     
-    event NewOrder(Orders.Order order);
+    event NewOrder(bytes32 orderHash);
 
     address private gvReserve;
 
     mapping (bytes32 => Orders.Order) orders;
+
+    function getOrder(bytes32 orderHash) view public {
+        return orders[orderHash];
+    } returns Orders.Order;
 
     function placeOrder(Orders.Order memory order) override external {
         order.validate();
@@ -56,5 +60,6 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
         
         IReserve reserve = IReserve(gvReserve);
         reserve.transfer(order.toToken, amount, order.maker);
+        delete orders[orderHash];
     }
 }

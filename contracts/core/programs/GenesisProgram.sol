@@ -59,6 +59,7 @@ contract GenesisProgram is GenesisCoffer
         
         IERC20 erc20From = IERC20(from);
         erc20From.allowance(msg.sender, address(pool));
+        // TODO check allowance and amount
 
         Orders.Order memory order;
         order.maker = address(this); // check
