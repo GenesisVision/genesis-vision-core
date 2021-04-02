@@ -33,12 +33,6 @@ contract("GVLiquidityPool", async accounts => {
     });
 
     it("should emit event on place order", async () => {
-        
-        // await token.deposit(gvReserve.address, 1000);
-        // await gvReserve.transfer(token.address, 500, accounts[2], {from: accounts[1]});
-
-        // let amount = await token.balanceOf.call(accounts[2]);
-        // assert.equal(500, amount.valueOf());
         let order = new Orders.Order();
         order.maker = accounts[1];
         order.fromToken = token1.address;
@@ -71,5 +65,23 @@ contract("GVLiquidityPool", async accounts => {
         assert.equal(200, accountAmount2.valueOf());
     });
 
+    it("should cancel order", async () => {
+        let order = new Orders.Order();
+        order.maker = accounts[1];
+        order.fromToken = token1.address;
+        order.toToken = token2.address;
+        order.amountSrc = 100;
+        order.minAmountDest = 200;
+
+        //TODO How to set Date
+        //TODO test on expiration date
+        order.expirationDate = 999999999999;
+        await pool.placeOrder(order);
+        orderHash = ""; // TODO calculate hash
+        await pool.cancelOrder(orderHash);
+        truffleAssert.eventEmitted(tx, 'OrderCancelled', (ev) => {
+            return ev.orderHash === orderHash;
+          });
+    });
     // TODO test cancel order
 });
