@@ -31,6 +31,7 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
     using Orders for Orders.Order;
     
     event NewOrder(bytes32 orderHash);
+    event OrderCancelled(bytes32 orderHash);
 
     address private gvReserve;
 
@@ -48,6 +49,13 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
         require(orders[hash].maker == address(0), "order-exists");
         orders[hash] = order;
         emit NewOrder(order);
+    }
+
+    function cancelOrder(bytes32 orderHash) external {
+        let order = orders[orderHash];
+        require(order.maker == msg.sender, "require: maker = sender");
+        delete orders[orderHash];
+        emit OrderCancelled(orderHash);
     }
 
     function executeOrder(bytes32 orderHash, uint256 amount) external onlyOperator {

@@ -70,4 +70,6 @@ contract("GVLiquidityPool", async accounts => {
         assert.equal(900, accountAmount1.valueOf());
         assert.equal(200, accountAmount2.valueOf());
     });
+
+    // TODO test cancel order
 });
