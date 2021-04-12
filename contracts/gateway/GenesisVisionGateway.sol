@@ -61,7 +61,6 @@ contract GenesisVisionGateway is AdminOperatorAccess {
 
     mapping(address => uint) public availableForWithdrawal;
 
-
     address payable whitelistedWallet;
 
     function addAsset(string calldata assetId, AssetType assetType) external onlyOperator {
@@ -93,7 +92,16 @@ contract GenesisVisionGateway is AdminOperatorAccess {
         withdrawalRequestIndex++;
     }
 
-    function withdrawByAdmin(uint256 amount) public onlyAdmin {
+    function setWhitelistedWallet(address wallet) public onlyAdmin {
+        whitelistedWallet = payable(wallet);
+    }
+
+    function withdrawByAdmin(uint256 amount, address recipient) public onlyAdmin {
+        require(amount <= address(this).balance);
+        payable(recipient).transfer(amount);
+    }
+
+    function withdrawByOperator(uint256 amount) public onlyAdmin {
         require(amount <= address(this).balance);
         require(whitelistedWallet != address(0));
         whitelistedWallet.transfer(amount);
@@ -118,6 +126,7 @@ contract GenesisVisionGateway is AdminOperatorAccess {
 
     function withdraw(uint amount) external {
         require(amount <= availableForWithdrawal[msg.sender]);
+        availableForWithdrawal[msg.sender] -= amount;
         payable(msg.sender).transfer(amount);
     }
 }
