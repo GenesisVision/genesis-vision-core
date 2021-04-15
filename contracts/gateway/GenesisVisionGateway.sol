@@ -26,33 +26,33 @@ contract GenesisVisionGateway is AdminOperatorAccess {
     enum AssetType { Program, Fund}
 
     struct Asset {
-        string id;
+        uint32 id;
         AssetType assetType;
     }
 
     struct InvestRequest {
-        string assetId;
+        uint32 assetId;
         address addr;
         uint amount;
         RequestStatus status;
     }
 
     struct WithdrawalRequest {
-        string assetId;
+        uint32 assetId;
         address addr;
         uint8 percent;
         RequestStatus status;
     }
 
-    event AssetAdded(string assetId, AssetType assetType);
-    event AssetRemoved(string assetId);
+    event AssetAdded(uint32 assetId, AssetType assetType);
+    event AssetRemoved(uint32 assetId);
 
-    event NewInvestRequest(string assetId, address addr, uint amount, uint index);
+    event NewInvestRequest(uint32 assetId, address addr, uint amount, uint index);
     event InvestRequestNewStatus(uint requestIndex, RequestStatus newStatus);
 
-    event NewWithdrawalRequest(string assetId, address addr, uint8 percent, uint index);
+    event NewWithdrawalRequest(uint32 assetId, address addr, uint8 percent, uint index);
 
-    mapping(string => Asset) public assets;
+    mapping(uint32 => Asset) public assets;
     mapping(uint => InvestRequest) investRequests;
     mapping(uint => WithdrawalRequest) withdrawalRequests;
 
@@ -63,7 +63,7 @@ contract GenesisVisionGateway is AdminOperatorAccess {
 
     address payable whitelistedWallet;
 
-    function addAsset(string calldata assetId, AssetType assetType) external onlyOperator {
+    function addAsset(uint32 assetId, AssetType assetType) external onlyOperator {
         Asset storage newAsset = assets[assetId];
 
         newAsset.id = assetId;
@@ -72,20 +72,20 @@ contract GenesisVisionGateway is AdminOperatorAccess {
         emit AssetAdded(assetId, assetType);
     }
 
-    function removeAsset(string calldata assetId) external onlyOperator {
+    function removeAsset(uint32 assetId) external onlyOperator {
         delete assets[assetId];
 
         emit AssetRemoved(assetId);
     }
 
-    function investRequest(string memory assetId) public payable {
+    function investRequest(uint32 assetId) public payable {
         InvestRequest memory request = InvestRequest({assetId: assetId, addr: msg.sender, amount: msg.value, status: RequestStatus.InProcess });
         investRequests[investRequestIndex] = request;
         emit NewInvestRequest(assetId, msg.sender, msg.value, investRequestIndex);
         investRequestIndex++;
     }
 
-    function withdrawalRequest(string memory fundId, uint8 percent) public {
+    function withdrawalRequest(uint32 fundId, uint8 percent) public {
         WithdrawalRequest memory request = WithdrawalRequest({assetId: fundId, addr: msg.sender, percent: percent, status: RequestStatus.InProcess });
         withdrawalRequests[withdrawalRequestIndex] = request;
         emit NewWithdrawalRequest(fundId, msg.sender, percent, withdrawalRequestIndex);

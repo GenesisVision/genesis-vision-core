@@ -11,8 +11,8 @@ contract("GenesisVisionGateway invest tests", async accounts => {
 
   it("should add investment request", async () => {
     let gateway = await GenesisVisionGateway.deployed();
-    await gateway.addAsset("testProgram1", 0, { from: accounts[1] });
-    await gateway.investRequest("testProgram1", { value: 1000 });
+    await gateway.addAsset(1, 0, { from: accounts[1] });
+    await gateway.investRequest(1, { value: 1000 });
 
     let balance = await web3.eth.getBalance(gateway.address);
     assert.equal(1000, balance.valueOf());
@@ -20,11 +20,11 @@ contract("GenesisVisionGateway invest tests", async accounts => {
 
   it("should emit new investment request event", async () => {
     let gateway = await GenesisVisionGateway.deployed();
-    await gateway.addAsset("testProgram2", 0, { from: accounts[1] });
-    let tx = await gateway.investRequest("testProgram2", { value: 1000, from: accounts[2] });
+    await gateway.addAsset(2, 0, { from: accounts[1] });
+    let tx = await gateway.investRequest(2, { value: 1000, from: accounts[2] });
 
     truffleAssert.eventEmitted(tx, 'NewInvestRequest', (ev) => {
-      return ev.assetId === "testProgram2" && ev.addr === accounts[2] && ev.amount.toNumber() === 1000 && ev.index.toNumber() === 1;
+      return ev.assetId.toNumber() === 2 && ev.addr === accounts[2] && ev.amount.toNumber() === 1000 && ev.index.toNumber() === 1;
     });
   });
 
@@ -35,7 +35,7 @@ contract("GenesisVisionGateway invest tests", async accounts => {
 
   //   truffleAssert.eventEmitted(tx, 'NewInvestRequest', (ev) => {
   //     console.log(ev);
-  //     return ev.assetId === "testProgram2" && ev.addr === accounts[2] && ev.amount.toNumber() === 1000 && ev.index.toNumber() === 2;
+  //     return ev.assetId === 2 && ev.addr === accounts[2] && ev.amount.toNumber() === 1000 && ev.index.toNumber() === 2;
   //   });
   // });
 });
