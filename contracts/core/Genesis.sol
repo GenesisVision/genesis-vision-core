@@ -18,8 +18,6 @@
 
 pragma solidity ^0.8.0;
 
-import { IGenesisProgramFactory } from "./interfaces/IGenesisProgramFactory.sol";
-import { IGenesisFundFactory } from "./interfaces/IGenesisFundFactory.sol";
 import { IGenesisCoffer } from "./interfaces/IGenesisCoffer.sol";
 import { ITreasury } from "./interfaces/ITreasury.sol";
 import { IGenesis } from "./interfaces/IGenesis.sol";
@@ -46,8 +44,6 @@ contract Genesis is AdminOperatorAccess
 
     
     ITreasury private treasury;
-    IGenesisProgramFactory private programFactory;
-    IGenesisFundFactory private fundFactory;
     ILiquidityPool private liquidityPool;
     address public requiredAssetAddress;
 
@@ -67,15 +63,6 @@ contract Genesis is AdminOperatorAccess
         requiredAssetAddress = assetAddress;
     }
 
-    function setProgramFactory(
-        address _programFactory
-        )
-        onlyAdmin
-        external 
-    {
-        programFactory = IGenesisProgramFactory(_programFactory);
-    }
-    
     function setLiquidityPool(
         address _liquidityPool
         )
@@ -87,15 +74,6 @@ contract Genesis is AdminOperatorAccess
 
     function getLiquidityPool() external view returns (address){
         return address(liquidityPool);
-    }
-
-
-    function setFundFactory(
-        address _fundFactory
-        )
-        external
-    {
-        fundFactory = IGenesisFundFactory(_fundFactory);
     }
 
     function getTreasury() public view returns (address){

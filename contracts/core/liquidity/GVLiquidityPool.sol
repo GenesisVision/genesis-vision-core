@@ -37,9 +37,12 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
 
     mapping (bytes32 => Orders.Order) orders;
 
-    function getOrder(bytes32 orderHash) view public {
+    function getOrder(bytes32 orderHash) 
+        view public
+        returns (Orders.Order memory)
+    {
         return orders[orderHash];
-    } returns Orders.Order;
+    } 
 
     function placeOrder(Orders.Order memory order) override external {
         order.validate();
@@ -48,11 +51,11 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
         require(msg.sender == order.maker, "Wrong order sender");
         require(orders[hash].maker == address(0), "order-exists");
         orders[hash] = order;
-        emit NewOrder(order);
+        emit NewOrder(hash);
     }
 
     function cancelOrder(bytes32 orderHash) external {
-        let order = orders[orderHash];
+        Orders.Order memory order = orders[orderHash];
         require(order.maker == msg.sender, "require: maker = sender");
         delete orders[orderHash];
         emit OrderCancelled(orderHash);
