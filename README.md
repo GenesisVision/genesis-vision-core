@@ -17,7 +17,7 @@ Program allows manager to perform trades through the smart contract, which utili
 ## Roadmap
 
 **14th of April**
-Genesis Vision Gateway launch on the Binance Smart Chain
+-Genesis Vision Gateway launch on the Binance Smart Chain-
 
 **19th of April**
 Genesis Vision Gateway launch on the XDAI
