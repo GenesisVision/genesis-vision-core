@@ -22,20 +22,20 @@ Program allows manager to perform trades through the smart contract, which utili
 **19th of April**
 ~~Genesis Vision Gateway launch on the XDAI~~
 
-**26th of April**
+**10th of May**
 Genesis Vision Protocol launch Programs with GV Liquidity on Ethereum
 
-**29th of April**
+**13th of May**
 Genesis Vision Protocol launch Funds with GV Liquidity on Ethereum
 
-**4th of May**
+**20th of May**
 Genesis Vision Protocol launch Programs with GV Liquidity on BCS (Binance Smart Chain)
 
-**7th of May**
+**21th of May**
 Genesis Vision Protocol launch Funds with GV Liquidity on BCS (Binance Smart Chain)
 
-**11th of May**
+**25th of May**
 Launch of the first 10 GV funds and 10 programs from top GV managers in the Genesis Vision Protocol
 
-**24th of May**
+**9th of June**
 First Trading Competition on Genesis Vision Protocol with a prize fund $25,000
