@@ -1,31 +1,35 @@
-const truffleAssert = require('truffle-assertions');
+const { expect } = require("chai");
 
-const GenesisVisionGateway = artifacts.require("GenesisVisionGateway");
-
-contract("GenesisVisionGateway invest tests", async accounts => {
+describe("GenesisVisionGateway invest tests", () => {
+  let gateway;
 
   beforeEach(async () => {
-    let gateway = await GenesisVisionGateway.deployed();
-    await gateway.setOperator(accounts[1]);
+    let GenesisVisionGatewayFactory = await ethers.getContractFactory("GenesisVisionGateway");
+    let GenesisVisionGateway = await GenesisVisionGatewayFactory.deploy();
+
+    gateway = await GenesisVisionGateway.deployed();
+
+    const [addr1] = await ethers.getSigners();
+    await gateway.setOperator(addr1.address);
   });
 
   it("should add investment request", async () => {
-    let gateway = await GenesisVisionGateway.deployed();
-    await gateway.addAsset(1, 0, { from: accounts[1] });
+    const [addr1] = await ethers.getSigners();
+
+    await gateway.connect(addr1).addAsset(1, 0);
     await gateway.investRequest(1, { value: 1000 });
 
     let balance = await web3.eth.getBalance(gateway.address);
-    assert.equal(1000, balance.valueOf());
+    expect(balance.valueOf()).to.equal("1000");
   });
 
   it("should emit new investment request event", async () => {
-    let gateway = await GenesisVisionGateway.deployed();
-    await gateway.addAsset(2, 0, { from: accounts[1] });
-    let tx = await gateway.investRequest(2, { value: 1000, from: accounts[2] });
+    const [addr1, addr2] = await ethers.getSigners();
 
-    truffleAssert.eventEmitted(tx, 'NewInvestRequest', (ev) => {
-      return ev.assetId.toNumber() === 2 && ev.addr === accounts[2] && ev.amount.toNumber() === 1000 && ev.index.toNumber() === 1;
-    });
+    await gateway.connect(addr1).addAsset(2, 0);
+    await expect(gateway.connect(addr2).investRequest(2, { value: 1000 }))
+      .to.emit(gateway, 'NewInvestRequest')
+      .withArgs(2, addr2.address, 1000, 0);
   });
 
   // it("should emit new investment request status event", async () => {

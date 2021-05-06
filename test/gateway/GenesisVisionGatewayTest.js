@@ -1,43 +1,37 @@
-const truffleAssert = require('truffle-assertions');
+const { expect } = require("chai");
 
-const GenesisVisionGateway = artifacts.require("GenesisVisionGateway");
-
-
-contract("GenesisVisionGateway", async accounts => {
+describe("GenesisVisionGateway", () => {
+    let gateway;
 
     beforeEach(async () => {
-        let gateway = await GenesisVisionGateway.deployed();
-        await gateway.setOperator(accounts[1]);
+        let GenesisVisionGatewayFactory = await ethers.getContractFactory("GenesisVisionGateway");
+        let GenesisVisionGateway = await GenesisVisionGatewayFactory.deploy();
+        gateway = await GenesisVisionGateway.deployed();
+    
+        const [addr1] = await ethers.getSigners();
+        await gateway.setOperator(addr1.address);
     });
 
     it("should add asset", async () => {
-        let gateway = await GenesisVisionGateway.deployed();
-        let tx = await gateway.addAsset(1, 0, {from: accounts[1]});
-        
-        truffleAssert.eventEmitted(tx, 'AssetAdded', (ev) => {
-            return ev.assetId.toNumber() === 1 && ev.assetType.toNumber() === 0;
-        });
+        const [addr1] = await ethers.getSigners();
+        await expect(gateway.connect(addr1).addAsset(1, 0))
+          .to.emit(gateway, 'AssetAdded')
+          .withArgs(1, 0);
     });
 
     it("should remove asset", async () => {
-        let gateway = await GenesisVisionGateway.deployed();
-        let tx = await gateway.removeAsset(1, {from: accounts[1]});
-        
-        truffleAssert.eventEmitted(tx, 'AssetRemoved', (ev) => {
-            return ev.assetId.toNumber() === 1;
-        });
+        const [addr1] = await ethers.getSigners();
+        await expect(gateway.connect(addr1).removeAsset(1))
+          .to.emit(gateway, 'AssetRemoved')
+          .withArgs(1);
     });
 
     it("should add invest request", async () => {
-        let gateway = await GenesisVisionGateway.deployed();
-        await gateway.addAsset(2, 0, {from: accounts[1]});
-        
-        let tx = await gateway.investRequest(2, {from: accounts[2], value: 1})
+        const [addr1, addr2] = await ethers.getSigners();
 
-        truffleAssert.eventEmitted(tx, 'NewInvestRequest', (ev) => {
-            return ev.assetId.toNumber() === 2 && ev.addr === accounts[2] && ev.amount.toNumber() === 1;
-        });
-
+        await gateway.connect(addr1).addAsset(2, 0);
+        await expect(gateway.connect(addr2).investRequest(2, { value: 1 }))
+          .to.emit(gateway, 'NewInvestRequest')
+          .withArgs(2, addr2.address, 1, 0);
     });
-
 });

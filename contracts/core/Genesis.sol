@@ -27,7 +27,7 @@ import { GenesisProgram } from "./programs/GenesisProgram.sol";
 import { GenesisCofferSettings } from "./GenesisCofferSettings.sol";
 import { AdminOperatorAccess } from "../lib/AdminOperatorAccess.sol";
 
-
+import "hardhat/console.sol";
 import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Genesis is AdminOperatorAccess
@@ -58,6 +58,7 @@ contract Genesis is AdminOperatorAccess
     function setRequiredAssetAddress(
         address assetAddress
         )
+        onlyAdmin
         external
     {
         requiredAssetAddress = assetAddress;
@@ -96,7 +97,6 @@ contract Genesis is AdminOperatorAccess
                                     managementFee, address(settings));
 
         emit LogAddress(address(program));
-
         treasury.transferBalance(requiredAssetAddress, msg.sender, address(program), wethAmount);
 
         return address(program);

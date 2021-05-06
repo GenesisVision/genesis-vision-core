@@ -1,227 +1,274 @@
-const GenesisCoffer = artifacts.require("GenesisCoffer");
-const Genesis = artifacts.require("Genesis");
-const Erc20Mocked = artifacts.require("Erc20Mocked");
-const Treasury = artifacts.require("Treasury");
-const GenesisProgram = artifacts.require("GenesisProgram");
-const TransferProxy = artifacts.require("TransferProxy");
+const { expect } = require("chai");
 
-contract("Genesis", async accounts => {
+// const GenesisCoffer = artifacts.require("GenesisCoffer");
+// const Genesis = artifacts.require("Genesis");
+// const Erc20Mocked = artifacts.require("Erc20Mocked");
+// const Treasury = artifacts.require("Treasury");
+// const GenesisProgram = artifacts.require("GenesisProgram");
+// const TransferProxy = artifacts.require("TransferProxy");
+
+const GenesisProgramContract = require('../../build/contracts/GenesisProgram');
+
+
+describe("Genesis", () => {
   
   let genesis;
   let weth;
   let treasury;
   let transferProxy;
-  let managerAccount = accounts[0];
-  let investorFirst = accounts[1];
+  let managerAccount;
+  let investorFirst;
+  let investorSecond;
   
   before('should init program', async () => {
-    genesis = await Genesis.deployed();
+    let Erc20MockedFactory = await ethers.getContractFactory("Erc20Mocked");
+    let Erc20Mocked = await Erc20MockedFactory.deploy("Weth test", "WETH");
     weth = await Erc20Mocked.deployed();
+
+    let TreasuryFactory = await ethers.getContractFactory("Treasury");
+    let Treasury = await TreasuryFactory.deploy();
     treasury = await Treasury.deployed();
+
+    let GenesisFactory = await ethers.getContractFactory("Genesis");
+    let Genesis = await GenesisFactory.deploy(treasury.address);
+    genesis = await Genesis.deployed();
+
+    let TransferProxyFactory = await ethers.getContractFactory("TransferProxy");
+    let TransferProxy = await TransferProxyFactory.deploy(treasury.address);
     transferProxy = await TransferProxy.deployed();
+
+    const [addr1, addr2, addr3] = await ethers.getSigners();
+    managerAccount = addr1;
+    investorFirst = addr2;
+    investorSecond = addr3;
   });
 
   it("should create program", async () => {
     let whiteList = [weth.address];
     let quantities = [1000];
+    await weth.deposit(managerAccount.address, 1000);
+    await weth.connect(managerAccount).approve(transferProxy.address, 1000);
 
-    await weth.deposit(managerAccount, 1000);
-    await weth.approve(transferProxy.address, 1000, { from: managerAccount });
+    await transferProxy.connect(managerAccount).batchDeposit(whiteList, quantities);
+    let accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
 
-    await transferProxy.batchDeposit(whiteList, quantities, { from: managerAccount });
+    expect(accountBalance).to.equal(1000);
+    // // Test create program
+    await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
 
-    let accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount);
-    assert.equal(1000, accountBalance);
+    let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
+    let res = await programAddress.wait();
 
-    // Test create program
-    let programAddress = await genesis.createProgram("testProgram", "GVTEST", whiteList, 1000, 1, { from: managerAccount });
+    let realProgramAddress = res.logs[res.logs.length - 2].address;
 
-    let realProgramAddress = programAddress.logs[programAddress.logs.length - 1].args
+    let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
 
-    var program = await GenesisProgram.at(realProgramAddress.text);
     let assets = [weth.address];
-    await program.init(assets);
+
+    await program.connect(managerAccount).init(assets);
     
-    let supply = await program.totalSupply.call();
-    assert.equal(supply, 1000000);
+    let supply = await program.connect(managerAccount).totalSupply.call();
+    expect(supply).to.equal(1000000);
 
-    let managerAmount = await program.balanceOf.call(managerAccount);
-    assert.equal(1000000 - 100, managerAmount.valueOf());
+    let managerAmount = await program.connect(managerAccount).balanceOf(managerAccount.address);
+    expect(managerAmount).to.equal(1000000 - 100);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount);
-    assert.equal(0, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
+    expect(accountBalance).to.equal(0);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress.text);
-    assert.equal(1000, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress);
+    expect(accountBalance).to.equal(1000);
   });
 
   it("should issue 1 000 000 and redeem 500 000 tokens by manager", async () => {
     let whiteList = [weth.address];
     let quantities = [1000];
 
-    await weth.deposit(managerAccount, 1000);
-    await weth.approve(transferProxy.address, 1000, { from: managerAccount });
+    await weth.deposit(managerAccount.address, 1000);
+    await weth.connect(managerAccount).approve(transferProxy.address, 1000);
 
-    await transferProxy.batchDeposit(whiteList, quantities, { from: managerAccount });
+    await transferProxy.connect(managerAccount).batchDeposit(whiteList, quantities);
+    await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
 
-    let programAddress = await genesis.createProgram("testProgram", "GVTEST", whiteList, 1000, 1, { from: managerAccount });
-    let realProgramAddress = programAddress.logs[programAddress.logs.length - 1].args
-    var program = await GenesisProgram.at(realProgramAddress.text);
+    let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
+    let res = await programAddress.wait();
+
+    let realProgramAddress = res.logs[res.logs.length - 2].address;
+
+    let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
+
     let assets = [weth.address];
-    await program.init(assets);
+    await program.connect(managerAccount).init(assets);
 
     // Test issue tokens by manager
-    await weth.deposit(managerAccount, 1000);
-    await weth.approve(transferProxy.address, 1000, { from: managerAccount });
+    await weth.deposit(managerAccount.address, 1000);
+    await weth.connect(managerAccount).approve(transferProxy.address, 1000);
 
-    await transferProxy.batchDeposit(whiteList, quantities, { from: managerAccount });
+    await transferProxy.connect(managerAccount).batchDeposit(whiteList, quantities);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount);
-    assert.equal(1000, accountBalance);
+    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
+    expect(accountBalance).to.equal(1000);
 
-    await genesis.issue(realProgramAddress.text, 1000000, { from: managerAccount });
+    await genesis.connect(managerAccount).issue(realProgramAddress, 1000000);
 
-    supply = await program.totalSupply.call();
-    assert.equal(supply, 2000000);
+    supply = await program.connect(managerAccount).totalSupply.call();
+    expect(supply).to.equal(2000000);
 
-    managerAmount = await program.balanceOf.call(managerAccount);
-    assert.equal(2000000  - 100, managerAmount.valueOf());
+    managerAmount = await program.connect(managerAccount).balanceOf(managerAccount.address);
+    expect(managerAmount.valueOf()).to.equal(2000000  - 100);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount);
-    assert.equal(0, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
+    expect(accountBalance.valueOf()).to.equal(0);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress.text);
-    assert.equal(2000, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress);
+    expect(accountBalance.valueOf()).to.equal(2000);
 
     //Test redeem tokens by manager
-    await genesis.redeem(realProgramAddress.text, 500000, { from: managerAccount });
+    await genesis.connect(managerAccount).redeem(realProgramAddress, 500000);
 
-    supply = await program.totalSupply.call();
-    assert.equal(supply, 1500000);
+    supply = await program.connect(managerAccount).totalSupply.call();
+    expect(supply.valueOf()).to.equal(1500000);
 
-    managerAmount = await program.balanceOf.call(managerAccount);
-    assert.equal(1500000 - 100, managerAmount.valueOf());
+    managerAmount = await program.connect(managerAccount).balanceOf(managerAccount.address);
+    expect(managerAmount.valueOf()).to.equal(1500000 - 100);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount);
-    assert.equal(500, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
+    expect(accountBalance.valueOf()).to.equal(500);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress.text);
-    assert.equal(1500, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress);
+    expect(accountBalance.valueOf()).to.equal(1500);
   });
 
   it("should issue 1 000 000 by manager and 2 000 000 by investor", async () => {
     let whiteList = [weth.address];
     let quantities = [1000];
 
-    await weth.deposit(managerAccount, 1000);
-    await weth.approve(transferProxy.address, 1000, { from: managerAccount });
+    await weth.deposit(managerAccount.address, 1000);
+    await weth.connect(managerAccount).approve(transferProxy.address, 1000);
 
-    await transferProxy.batchDeposit(whiteList, quantities, { from: managerAccount });
+    await transferProxy.connect(managerAccount).batchDeposit(whiteList, quantities);
 
-    let programAddress = await genesis.createProgram("testProgram", "GVTEST", whiteList, 1000, 1, { from: managerAccount });
-    let realProgramAddress = programAddress.logs[programAddress.logs.length - 1].args
-    var program = await GenesisProgram.at(realProgramAddress.text);
+    await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
+
+    let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
+    let res = await programAddress.wait();
+
+    let realProgramAddress = res.logs[res.logs.length - 2].address;
+
+    let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
+
     let assets = [weth.address];
-    await program.init(assets);
+    await program.connect(managerAccount).init(assets);
 
     // Test issue tokens by investor
     let investorQuantities = [2000];
-    await weth.deposit(investorFirst, 2000);
-    await weth.approve(transferProxy.address, 2000, { from: investorFirst });
+    await weth.deposit(investorFirst.address, 2000);
+    await weth.connect(investorFirst).approve(transferProxy.address, 2000);
 
-    await transferProxy.batchDeposit(whiteList, investorQuantities, { from: investorFirst });
+    await transferProxy.connect(investorFirst).batchDeposit(whiteList, investorQuantities);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, investorFirst);
-    assert.equal(2000, accountBalance);
+    accountBalance = await treasury.getOwnerBalance(weth.address, investorFirst.address);
+    expect(accountBalance.valueOf()).to.equal(2000);
 
-    await genesis.issue(realProgramAddress.text, 2000000, { from: investorFirst });
+    await genesis.connect(investorFirst).issue(realProgramAddress, 2000000);
 
-    supply = await program.totalSupply.call();
-    assert.equal(supply, 3000000);
+    supply = await program.connect(managerAccount).totalSupply.call();
+    expect(supply).to.equal(3000000);
 
-    managerAmount = await program.balanceOf.call(managerAccount);
-    assert.equal(1000000  - 100, managerAmount.valueOf());
+    managerAmount = await program.connect(managerAccount).balanceOf(managerAccount.address);
+    expect(managerAmount.valueOf()).to.equal(1000000  - 100);
 
-    investorAmount = await program.balanceOf.call(investorFirst);
-    assert.equal(2000000, investorAmount.valueOf());
+    investorAmount = await program.connect(managerAccount).balanceOf(investorFirst.address);
+    expect(investorAmount.valueOf()).to.equal(2000000);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, investorFirst);
-    assert.equal(0, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, investorFirst.address);
+    expect(accountBalance.valueOf()).to.equal(0);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress.text);
-    assert.equal(3000, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress);
+    expect(accountBalance.valueOf()).to.equal(3000);
   });
 
   it("should issue 1 000 000 by manager and 333 333 by investor", async () => {
     let whiteList = [weth.address];
     let quantities = [1000];
 
-    await weth.deposit(managerAccount, 1000);
-    await weth.approve(transferProxy.address, 1000, { from: managerAccount });
+    await weth.deposit(managerAccount.address, 1000);
+    await weth.connect(managerAccount).approve(transferProxy.address, 1000);
 
-    await transferProxy.batchDeposit(whiteList, quantities, { from: managerAccount });
+    await transferProxy.connect(managerAccount).batchDeposit(whiteList, quantities);
 
-    let programAddress = await genesis.createProgram("testProgram", "GVTEST", whiteList, 1000, 1, { from: managerAccount });
-    let realProgramAddress = programAddress.logs[programAddress.logs.length - 1].args
-    var program = await GenesisProgram.at(realProgramAddress.text);
+    await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
+
+    let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
+    let res = await programAddress.wait();
+
+    let realProgramAddress = res.logs[res.logs.length - 2].address;
+
+    let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
+
     let assets = [weth.address];
-    await program.init(assets);
+    await program.connect(managerAccount).init(assets);
 
     // Test issue tokens by investor
     let investorQuantities = [2000];
-    await weth.deposit(investorFirst, 2000);
-    await weth.approve(transferProxy.address, 2000, { from: investorFirst });
+    await weth.deposit(investorFirst.address, 2000);
+    await weth.connect(investorFirst).approve(transferProxy.address, 2000);
 
-    await transferProxy.batchDeposit(whiteList, investorQuantities, { from: investorFirst });
+    await transferProxy.connect(investorFirst).batchDeposit(whiteList, investorQuantities);
 
-    await genesis.issue(realProgramAddress.text, 333333, { from: investorFirst });
+    await genesis.connect(investorFirst).issue(realProgramAddress, 333333);
 
-    supply = await program.totalSupply.call();
-    assert.equal(supply, 1333333);
+    supply = await program.connect(managerAccount).totalSupply.call();
+    expect(supply).to.equal(1333333);
 
-    managerAmount = await program.balanceOf.call(managerAccount);
-    assert.equal(1000000 - 100, managerAmount.valueOf());
+    managerAmount = await program.connect(managerAccount).balanceOf(managerAccount.address);
+    expect(managerAmount.valueOf()).to.equal(1000000 - 100);
 
-    investorAmount = await program.balanceOf.call(investorFirst);
-    assert.equal(333333, investorAmount.valueOf());
+    investorAmount = await program.connect(managerAccount).balanceOf(investorFirst.address);
+    expect(investorAmount.valueOf()).to.equal(333333);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, investorFirst);
-    assert.equal(1666, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, investorFirst.address);
+    expect(accountBalance.valueOf()).to.equal(1666);
 
-    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress.text);
-    assert.equal(1334, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress);
+    expect(accountBalance.valueOf()).to.equal(1334);
+
   });
 
   it("should issue 1 000 000 by manager and redeem 333 333", async () => {
     let whiteList = [weth.address];
     let quantities = [1000];
 
-    await weth.deposit(accounts[2], 1000);
-    await weth.approve(transferProxy.address, 1000, { from: accounts[2] });
+    await weth.deposit(investorSecond.address, 1000);
+    await weth.connect(investorSecond).approve(transferProxy.address, 1000);
 
-    await transferProxy.batchDeposit(whiteList, quantities, { from: accounts[2] });
+    await transferProxy.connect(investorSecond).batchDeposit(whiteList, quantities);
 
-    let programAddress = await genesis.createProgram("testProgram", "GVTEST", whiteList, 1000, 1, { from: accounts[2] });
-    let realProgramAddress = programAddress.logs[programAddress.logs.length - 1].args
-    var program = await GenesisProgram.at(realProgramAddress.text);
+    await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
+
+    let programAddress = await genesis.connect(investorSecond).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
+    let res = await programAddress.wait();
+
+    let realProgramAddress = res.logs[res.logs.length - 2].address;
+
+    let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
+
     let assets = [weth.address];
+    await program.connect(managerAccount).init(assets);
 
-    await program.init(assets);
+    //Test redeem tokens by manager
+    await genesis.connect(investorSecond).redeem(realProgramAddress, 333333);
 
+    let supply = await program.connect(managerAccount).totalSupply.call();
+    expect(supply).to.equal(666667);
 
-    // Test redeem tokens by manager
-    await genesis.redeem(realProgramAddress.text, 333333, { from: accounts[2] });
+    let managerAmount = await program.connect(managerAccount).balanceOf(investorSecond.address);
+    expect(managerAmount.valueOf()).to.equal(666667  - 100);
 
-    let supply = await program.totalSupply.call();
-    assert.equal(supply, 666667);
+    let accountBalance = await treasury.getOwnerBalance(weth.address, investorSecond.address);
+    expect(accountBalance.valueOf()).to.equal(333);
 
-    let managerAmount = await program.balanceOf.call(accounts[2]);
-    assert.equal(666667  - 100, managerAmount.valueOf());
-
-    let accountBalance = await treasury.getOwnerBalance(weth.address, accounts[2]);
-    assert.equal(333, accountBalance.valueOf());
-
-    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress.text);
-    assert.equal(667, accountBalance.valueOf());
+    accountBalance = await treasury.getOwnerBalance(weth.address, realProgramAddress);
+    expect(accountBalance.valueOf()).to.equal(667);
   });
 });

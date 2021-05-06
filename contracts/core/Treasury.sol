@@ -25,6 +25,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./interfaces/ITransferProxy.sol";
 import "./interfaces/IGenesis.sol";
 
+import "hardhat/console.sol";
+
 contract Treasury
 {
     using SafeMath for uint256;
