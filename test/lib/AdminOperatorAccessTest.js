@@ -1,25 +1,37 @@
-const AdminOperatorAccessMock = artifacts.require("AdminOperatorAccessMock");
+const { expect } = require("chai");
 
-
-contract("AdminOperatorAccessMock", async accounts => {
+describe("AdminOperatorAccessMock", () => {
 
     it("should have admin", async () => {
+        let AdminOperatorAccessMockFactory = await ethers.getContractFactory("AdminOperatorAccessMock");
+        let AdminOperatorAccessMock = await AdminOperatorAccessMockFactory.deploy();
         let mock = await AdminOperatorAccessMock.deployed();
         let admin = await mock.getAdmin();
-        assert.equal(accounts[0], admin);
+        const [owner] = await ethers.getSigners();
+        expect(admin).to.equal(owner.address);
     });
 
     it("should change admin", async () => {
+        let AdminOperatorAccessMockFactory = await ethers.getContractFactory("AdminOperatorAccessMock");
+        let AdminOperatorAccessMock = await AdminOperatorAccessMockFactory.deploy();
         let mock = await AdminOperatorAccessMock.deployed();
-        await mock.setAdmin(accounts[1]);
+        const [addr1] = await ethers.getSigners();
+        await mock.setAdmin(addr1.address);
         let newAdmin = await mock.getAdmin();
-        assert.equal(accounts[1], newAdmin);
+        expect(newAdmin).to.equal(addr1.address);
     });
 
     it("should only admin has access to changing operator", async () => {
+        let AdminOperatorAccessMockFactory = await ethers.getContractFactory("AdminOperatorAccessMock");
+        let AdminOperatorAccessMock = await AdminOperatorAccessMockFactory.deploy();
         let mock = await AdminOperatorAccessMock.deployed();
+        const [owner, addr1, addr2] = await ethers.getSigners();
+        let realAdmin = await mock.getAdmin();
+        await mock.setAdmin(addr1.address);
+        realAdmin = await mock.getAdmin();
+
         try {
-            await mock.setOperator(accounts[2]);
+            await mock.setOperator(addr2.address);
         } catch(error) {
             return;
         }
@@ -27,30 +39,44 @@ contract("AdminOperatorAccessMock", async accounts => {
     });
 
     it("should change operator", async () => {
+        let AdminOperatorAccessMockFactory = await ethers.getContractFactory("AdminOperatorAccessMock");
+        let AdminOperatorAccessMock = await AdminOperatorAccessMockFactory.deploy();
         let mock = await AdminOperatorAccessMock.deployed();
-        await mock.setAdmin(accounts[0], { from: accounts[1] });
-        await mock.setOperator(accounts[1]);
+        const [owner, addr1, addr2] = await ethers.getSigners();
+
+        await mock.setAdmin(owner.address);
+        await mock.setOperator(addr1.address);
         let newOperator = await mock.getOperator();
-        assert.equal(accounts[1], newOperator);
+        expect(newOperator).to.equal(addr1.address);
     });
 
     it("should only admin call admin function", async () => {
+        let AdminOperatorAccessMockFactory = await ethers.getContractFactory("AdminOperatorAccessMock");
+        let AdminOperatorAccessMock = await AdminOperatorAccessMockFactory.deploy();
         let mock = await AdminOperatorAccessMock.deployed();
+
+        const [owner, addr1, addr2] = await ethers.getSigners();
         try {
-            await mock.testAdminAccess({from : accounts[2]});
+            await mock.connect(addr2).testAdminAccess();
         } catch(error) {
-            await mock.testAdminAccess({from : accounts[0]});
+            await mock.connect(owner).testAdminAccess();
             return;
         }
         assert.fail("Access error");
     });
 
     it("should only operator call operator function", async () => {
+        let AdminOperatorAccessMockFactory = await ethers.getContractFactory("AdminOperatorAccessMock");
+        let AdminOperatorAccessMock = await AdminOperatorAccessMockFactory.deploy();
         let mock = await AdminOperatorAccessMock.deployed();
+
+        const [owner, addr1, addr2, addr3] = await ethers.getSigners();
+        await mock.setOperator(addr1.address);
+
         try {
-            await mock.testOperatorAccess({from : accounts[3]});
+            await mock.connect(addr3).testOperatorAccess();
         } catch(error) {
-            await mock.testOperatorAccess({from : accounts[1]});
+            await mock.connect(addr1).testOperatorAccess();
             return;
         }
         assert.fail("Access error");
