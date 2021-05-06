@@ -6,7 +6,6 @@ describe("GenesisVisionGateway invest tests", () => {
   beforeEach(async () => {
     let GenesisVisionGatewayFactory = await ethers.getContractFactory("GenesisVisionGateway");
     let GenesisVisionGateway = await GenesisVisionGatewayFactory.deploy();
-
     gateway = await GenesisVisionGateway.deployed();
 
     const [addr1] = await ethers.getSigners();
