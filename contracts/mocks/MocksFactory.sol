@@ -21,6 +21,8 @@ pragma solidity ^0.8.0;
 import { Erc20Mocked } from "./Erc20Mocked.sol";
 import { ExchangeWrapperMocked } from "./ExchangeWrapperMocked.sol";
 
+import "hardhat/console.sol";
+
 contract MocksFactory
 {
     event LogAddress(address text);
@@ -30,7 +32,7 @@ contract MocksFactory
         returns (address)
     {
         Erc20Mocked token = new Erc20Mocked(name, symbol);
-        LogAddress(address(token));
+        emit LogAddress(address(token));
         return address(token);
     }
 
@@ -39,7 +41,7 @@ contract MocksFactory
         returns (address)
     {
         ExchangeWrapperMocked exchange = new ExchangeWrapperMocked();
-        LogAddress(address(exchange));
+        emit LogAddress(address(exchange));
         return address(exchange);
     }
 }
