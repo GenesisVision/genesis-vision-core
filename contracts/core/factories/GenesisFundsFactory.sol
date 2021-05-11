@@ -1,3 +1,4 @@
+
 /*
     Copyright 2021 Genesis Vision LP.
 
@@ -18,17 +19,16 @@
 
 pragma solidity ^0.8.0;
 
-//import { IGenesis } from "../interfaces/IGenesis.sol";
+import { GenesisFund } from "../funds/GenesisFund.sol";
 
-import { GenesisCoffer } from "../GenesisCoffer.sol";
+import { IGenesisFundsFactory } from "../interfaces/IGenesisFundsFactory.sol";
 
-contract GenesisFund is GenesisCoffer
+contract GenesisFundsFactory is
+    IGenesisFundsFactory
 {
-    mapping(address => bool) public assetsWhiteList;
+    IGenesisFundsFactory private genesisFundsFactory;
 
-    address private genesis;
-
-    constructor(
+    function createFund(
         string memory _name,
         string memory _ticker,
         address[] memory _assetsWhiteList,
@@ -36,20 +36,10 @@ contract GenesisFund is GenesisCoffer
         uint256 amount,
         uint256 managementFee,
         address _cofferSettings
-        )
-        GenesisCoffer(amount * 1000, _name, _ticker, managementFee, _cofferSettings)
-    {
-        genesis = _genesis;
-        for (uint256 i = 0; i < _assetsWhiteList.length; i++)
-            assetsWhiteList[_assetsWhiteList[i]] = true;
-    }
-
-    function rebalance() external {
-        require(msg.sender == manager, "require: sender is manager");
-    }
-
-    function relocate(bytes32[] memory relocateData) external {
-        require(msg.sender == manager, "require: sender is manager");
-    }
-    
+    )
+        external override
+        returns (address) {
+            GenesisFund fund = new GenesisFund(_name, _ticker, _assetsWhiteList, _genesis, amount, managementFee, _cofferSettings);
+            return address(fund);
+        }
 }

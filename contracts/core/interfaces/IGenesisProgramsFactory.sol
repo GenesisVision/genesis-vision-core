@@ -1,3 +1,4 @@
+
 /*
     Copyright 2021 Genesis Vision LP.
 
@@ -18,7 +19,16 @@
 
 pragma solidity ^0.8.0;
 
-interface IGenesisFundImpl {
-     function rebalance() external;
-     function relocate(bytes32[] memory relocateData) external;
+interface IGenesisProgramsFactory {
+    function createProgram(
+        string memory _name,
+        string memory _ticker,
+        address[] memory _assetsWhiteList,
+        address _genesis,
+        uint256 amount,
+        uint256 managementFee,
+        address _cofferSettings
+    )
+        external
+        returns (address);
 }

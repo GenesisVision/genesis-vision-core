@@ -21,9 +21,24 @@ describe("Genesis Programs Tests", () => {
     let Treasury = await TreasuryFactory.deploy();
     treasury = await Treasury.deployed();
 
+    let GenesisProgramsFactoryFactory = await ethers.getContractFactory("GenesisProgramsFactory");
+    let GenesisProgramsFactory = await GenesisProgramsFactoryFactory.deploy();
+    let genesisProgramsFactory = await GenesisProgramsFactory.deployed();
+
+    let GenesisFundsFactoryFactory = await ethers.getContractFactory("GenesisFundsFactory");
+    let GenesisFundsFactory = await GenesisFundsFactoryFactory.deploy();
+    let genesisFundsFactory = await GenesisFundsFactory.deployed();
+
+    let GenesisAssetsFactoryFactory = await ethers.getContractFactory("GenesisAssetsFactory");
+    let GenesisAssetsFactory = await GenesisAssetsFactoryFactory.deploy();
+    let genesisAssetsFactory = await GenesisAssetsFactory.deployed();
+    genesisAssetsFactory.setFundsFactory(genesisFundsFactory.address);
+    genesisAssetsFactory.setProgramsFactory(genesisProgramsFactory.address);
+
     let GenesisFactory = await ethers.getContractFactory("Genesis");
     let Genesis = await GenesisFactory.deploy(treasury.address);
     genesis = await Genesis.deployed();
+    genesis.setAssetsFactory(genesisAssetsFactory.address);
 
     let TransferProxyFactory = await ethers.getContractFactory("TransferProxy");
     let TransferProxy = await TransferProxyFactory.deploy(treasury.address);
@@ -45,14 +60,12 @@ describe("Genesis Programs Tests", () => {
     let accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
 
     expect(accountBalance).to.equal(1000);
-    // // Test create program
+    // Test create program
     await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
 
     let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
     let res = await programAddress.wait();
-
-    let realProgramAddress = res.logs[res.logs.length - 2].address;
-
+    let realProgramAddress = res.logs[res.logs.length - 1].data.replace("0x000000000000000000000000", "0x");
     let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
 
     let assets = [weth.address];
@@ -85,7 +98,7 @@ describe("Genesis Programs Tests", () => {
     let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
     let res = await programAddress.wait();
 
-    let realProgramAddress = res.logs[res.logs.length - 2].address;
+    let realProgramAddress = res.logs[res.logs.length - 1].data.replace("0x000000000000000000000000", "0x");
 
     let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
 
@@ -145,7 +158,7 @@ describe("Genesis Programs Tests", () => {
     let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
     let res = await programAddress.wait();
 
-    let realProgramAddress = res.logs[res.logs.length - 2].address;
+    let realProgramAddress = res.logs[res.logs.length - 1].data.replace("0x000000000000000000000000", "0x");
 
     let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
 
@@ -194,7 +207,7 @@ describe("Genesis Programs Tests", () => {
     let programAddress = await genesis.connect(managerAccount).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
     let res = await programAddress.wait();
 
-    let realProgramAddress = res.logs[res.logs.length - 2].address;
+    let realProgramAddress = res.logs[res.logs.length - 1].data.replace("0x000000000000000000000000", "0x");
 
     let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
 
@@ -241,7 +254,7 @@ describe("Genesis Programs Tests", () => {
     let programAddress = await genesis.connect(investorSecond).createProgram("testProgram", "GVTEST", whiteList, 1000, 1);
     let res = await programAddress.wait();
 
-    let realProgramAddress = res.logs[res.logs.length - 2].address;
+    let realProgramAddress = res.logs[res.logs.length - 1].data.replace("0x000000000000000000000000", "0x");
 
     let program = new ethers.Contract(realProgramAddress, GenesisProgramContract.abi, ethers.getDefaultProvider());
 

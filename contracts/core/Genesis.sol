@@ -20,31 +20,23 @@ pragma solidity ^0.8.0;
 
 import { IGenesisCoffer } from "./interfaces/IGenesisCoffer.sol";
 import { ITreasury } from "./interfaces/ITreasury.sol";
-import { IGenesis } from "./interfaces/IGenesis.sol";
+import { IGenesisAssetsFactory } from "./interfaces/IGenesisAssetsFactory.sol";
 import { ILiquidityPool } from "./interfaces/ILiquidityPool.sol";
 
 import { GenesisProgram } from "./programs/GenesisProgram.sol";
+import { GenesisFund } from "./funds/GenesisFund.sol";
 import { GenesisCofferSettings } from "./GenesisCofferSettings.sol";
 import { AdminOperatorAccess } from "../lib/AdminOperatorAccess.sol";
 
 import "hardhat/console.sol";
-import { ERC20 } from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Genesis is AdminOperatorAccess
 {
-    event LogText(string text);
-    event LogUint256(uint256 text);
     event LogAddress(address text);
-
-    function log(string calldata text)
-        external
-    {
-        emit LogText(text);
-    }
-
     
     ITreasury private treasury;
     ILiquidityPool private liquidityPool;
+    IGenesisAssetsFactory private assetsFactory;
     address public requiredAssetAddress;
 
     constructor(
@@ -73,6 +65,15 @@ contract Genesis is AdminOperatorAccess
         liquidityPool = ILiquidityPool(_liquidityPool);
     }
 
+    function setAssetsFactory(
+        address _assetsFactory
+        )
+        onlyAdmin
+        external 
+    {
+        assetsFactory = IGenesisAssetsFactory(_assetsFactory);
+    }
+
     function getLiquidityPool() external view returns (address){
         return address(liquidityPool);
     }
@@ -93,13 +94,33 @@ contract Genesis is AdminOperatorAccess
     {
         GenesisCofferSettings settings = new GenesisCofferSettings(100);
 
-        GenesisProgram program = new GenesisProgram(name, ticker, assetsWhiteList, address(this), wethAmount, 
-                                    managementFee, address(settings));
+        address program = assetsFactory.createProgram(name, ticker, assetsWhiteList, address(this), wethAmount, managementFee, address(settings));
 
         emit LogAddress(address(program));
+        //console.log(address(program));
         treasury.transferBalance(requiredAssetAddress, msg.sender, address(program), wethAmount);
 
         return address(program);
+    }
+
+    function createFund(
+        string calldata name,
+        string calldata ticker,
+        address[] calldata assetsWhiteList,
+        uint256 wethAmount,
+        uint256 managementFee
+    )
+        external
+        returns (address)
+    {
+        GenesisCofferSettings settings = new GenesisCofferSettings(100);
+
+        address fund = assetsFactory.createFund(name, ticker, assetsWhiteList, address(this), wethAmount, managementFee, address(settings));
+
+        emit LogAddress(address(fund));
+        treasury.transferBalance(requiredAssetAddress, msg.sender, address(fund), wethAmount);
+
+        return address(fund);
     }
 
     function issue(
