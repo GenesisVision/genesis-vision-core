@@ -25,27 +25,29 @@ import { GenesisCoffer } from "../GenesisCoffer.sol";
 
 contract GenesisFund is GenesisCoffer
 {
-    IGenesis private genesisCore;
+    address private genesis;
     IGenesisFundImpl private fundImpl;
 
     constructor(
         string memory _name,
         string memory _ticker,
-        address _genesisCore,
+        address _genesis,
         uint256 amount,
         uint256 managementFee,
         address _cofferSettings
         )
         GenesisCoffer(amount * 1000, _name, _ticker, managementFee, _cofferSettings)
     {
-        genesisCore = IGenesis(_genesisCore);
+        genesis = _genesis;
     }
 
     function rebalance() external {
+        require(msg.sender == manager, "require: sender is manager");
         fundImpl.rebalance();
     }
 
     function relocate(bytes32[] memory relocateData) external {
+        require(msg.sender == manager, "require: sender is manager");
         fundImpl.relocate(relocateData);
     }
     

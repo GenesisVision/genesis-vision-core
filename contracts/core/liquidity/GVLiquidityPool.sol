@@ -26,6 +26,8 @@ import "../../lib/AdminOperatorAccess.sol";
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+import "hardhat/console.sol";
+
 contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
 {
     using Orders for Orders.Order;
@@ -36,6 +38,10 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
     address private gvReserve;
 
     mapping (bytes32 => Orders.Order) orders;
+   
+    function setGVReserve(address _gvReserve) public onlyAdmin {
+        gvReserve = _gvReserve;
+    }
 
     function getOrder(bytes32 orderHash) 
         view public
@@ -49,6 +55,7 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
         bytes32 hash = order.hash();
         // Sign
         require(msg.sender == order.maker, "Wrong order sender");
+        console.log("Order: %s", orders[hash].maker);
         require(orders[hash].maker == address(0), "order-exists");
         orders[hash] = order;
         emit NewOrder(hash);
@@ -63,7 +70,7 @@ contract GVLiquidityPool is ILiquidityPool, AdminOperatorAccess
 
     function executeOrder(bytes32 orderHash, uint256 amount) external onlyOperator {
         Orders.Order memory order = orders[orderHash];
-        require(order.expirationDate < block.timestamp, "Order is expired");
+        require(order.expirationDate > block.timestamp, "Order is expired");
         require(order.minAmountDest <= amount, "Order amount is less than min amount");
 
         IERC20 srcToken = IERC20(order.fromToken);

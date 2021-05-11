@@ -1,16 +1,8 @@
 const { expect } = require("chai");
 
-// const GenesisCoffer = artifacts.require("GenesisCoffer");
-// const Genesis = artifacts.require("Genesis");
-// const Erc20Mocked = artifacts.require("Erc20Mocked");
-// const Treasury = artifacts.require("Treasury");
-// const GenesisProgram = artifacts.require("GenesisProgram");
-// const TransferProxy = artifacts.require("TransferProxy");
-
 const GenesisProgramContract = require('../../build/contracts/GenesisProgram');
 
-
-describe("Genesis", () => {
+describe("Genesis Programs Tests", () => {
   
   let genesis;
   let weth;

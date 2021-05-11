@@ -24,7 +24,7 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract GVReserve is AdminOperatorAccess
 {
-    address private pool;
+    address private pool; 
 
     function setLiquidityPool(address _pool) public onlyAdmin {
         pool = _pool;

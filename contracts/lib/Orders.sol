@@ -28,6 +28,24 @@ library Orders {
         uint256 expirationDate;
     }
 
+    function createOrder(
+        address maker,
+        address fromToken,
+        address toToken,
+        uint256 amountSrc,
+        uint256 minAmountDest,
+        uint256 expirationDate
+        ) external pure returns (Order memory) {
+            Order memory order;
+            order.maker = maker;
+            order.fromToken = fromToken;
+            order.toToken = toToken;
+            order.amountSrc = amountSrc;
+            order.minAmountDest = minAmountDest;
+            order.expirationDate = expirationDate;
+            return order;
+        }
+
     function hash(Order memory order) internal pure returns (bytes32) {
         return
             keccak256(
