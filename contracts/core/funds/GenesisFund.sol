@@ -15,7 +15,7 @@
 
     SPDX-License-Identifier: Apache-2.0
 */
-
+ 
 pragma solidity ^0.8.0;
 
 //import { IGenesis } from "../interfaces/IGenesis.sol";
@@ -27,6 +27,8 @@ contract GenesisFund is GenesisCoffer
     mapping(address => bool) public assetsWhiteList;
 
     address private genesis;
+
+    event relocateRequest();
 
     constructor(
         string memory _name,
@@ -48,8 +50,19 @@ contract GenesisFund is GenesisCoffer
     //     require(msg.sender == manager, "require: sender is manager");
     // }
 
-    // function relocate(bytes32[] memory relocateData) external {
-    //     require(msg.sender == manager, "require: sender is manager");
-    // }
+    function relocate(address[] memory assets, uint16[] memory locationPercent) external {
+        require(msg.sender == manager, "require: sender is manager");
+        require(assets.length == locationPercent.length, "Wrong parameters");
+        for (uint256 i = 0; i < assets.length; i++)
+            require(assetsWhiteList[assets[i]], "Asset in not whilelisted");
+        
+        uint16 percentSum = 0;
+        for (uint256 i = 0; i < locationPercent.length; i++)
+            percentSum += locationPercent[i];
+
+        require(percentSum == 10000, "Total location should be 100%");
+
+        emit relocateRequest(); // TODO Data 
+    }
     
 }
