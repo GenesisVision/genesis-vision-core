@@ -25,14 +25,9 @@ describe("Genesis Programs Tests", () => {
     let GenesisProgramsFactory = await GenesisProgramsFactoryFactory.deploy();
     let genesisProgramsFactory = await GenesisProgramsFactory.deployed();
 
-    let GenesisFundsFactoryFactory = await ethers.getContractFactory("GenesisFundsFactory");
-    let GenesisFundsFactory = await GenesisFundsFactoryFactory.deploy();
-    let genesisFundsFactory = await GenesisFundsFactory.deployed();
-
     let GenesisAssetsFactoryFactory = await ethers.getContractFactory("GenesisAssetsFactory");
     let GenesisAssetsFactory = await GenesisAssetsFactoryFactory.deploy();
     let genesisAssetsFactory = await GenesisAssetsFactory.deployed();
-    genesisAssetsFactory.setFundsFactory(genesisFundsFactory.address);
     genesisAssetsFactory.setProgramsFactory(genesisProgramsFactory.address);
 
     let GenesisFactory = await ethers.getContractFactory("Genesis");

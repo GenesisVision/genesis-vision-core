@@ -26,8 +26,6 @@ import { IGenesisFundsFactory } from "../interfaces/IGenesisFundsFactory.sol";
 contract GenesisFundsFactory is
     IGenesisFundsFactory
 {
-    IGenesisFundsFactory private genesisFundsFactory;
-
     function createFund(
         string memory _name,
         string memory _ticker,

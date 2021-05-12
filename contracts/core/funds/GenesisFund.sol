@@ -44,12 +44,12 @@ contract GenesisFund is GenesisCoffer
             assetsWhiteList[_assetsWhiteList[i]] = true;
     }
 
-    function rebalance() external {
-        require(msg.sender == manager, "require: sender is manager");
-    }
+    // function rebalance() external {
+    //     require(msg.sender == manager, "require: sender is manager");
+    // }
 
-    function relocate(bytes32[] memory relocateData) external {
-        require(msg.sender == manager, "require: sender is manager");
-    }
+    // function relocate(bytes32[] memory relocateData) external {
+    //     require(msg.sender == manager, "require: sender is manager");
+    // }
     
 }

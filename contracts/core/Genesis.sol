@@ -114,7 +114,6 @@ contract Genesis is AdminOperatorAccess
         returns (address)
     {
         GenesisCofferSettings settings = new GenesisCofferSettings(100);
-
         address fund = assetsFactory.createFund(name, ticker, assetsWhiteList, address(this), wethAmount, managementFee, address(settings));
 
         emit LogAddress(address(fund));
