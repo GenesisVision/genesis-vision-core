@@ -4,7 +4,7 @@ const { expect } = require("chai");
 // const MocksFactory = artifacts.require("MocksFactory");
 // const Erc20Mocked = artifacts.require("Erc20Mocked");
 
-const Erc20MockedContract = require('../../build/contracts/Erc20Mocked');
+const Erc20MockedContract = require('../../artifacts/contracts/mocks/Erc20Mocked.sol/Erc20Mocked');
 
 describe("GVReserve", () => {
 

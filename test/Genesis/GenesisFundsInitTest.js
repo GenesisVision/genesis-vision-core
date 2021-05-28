@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-const GenesisFundContract = require('../../build/contracts/GenesisFund');
+const GenesisFundContract = require('../../artifacts/contracts/core/funds/GenesisFund.sol/GenesisFund');
 
 describe("Genesis Funds Tests", () => {
   
@@ -81,6 +81,7 @@ describe("Genesis Funds Tests", () => {
     accountBalance = await treasury.getOwnerBalance(weth.address, realFundAddress);
     expect(accountBalance).to.equal(1000);
   });
+  
   it("should issue 1 000 000 and redeem 500 000 tokens by manager", async () => {
     let whiteList = [weth.address];
     let quantities = [1000];

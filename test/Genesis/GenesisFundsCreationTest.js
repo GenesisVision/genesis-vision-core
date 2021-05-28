@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-const GenesisFundContract = require('../../build/contracts/GenesisFund');
+const GenesisFundContract = require('../../artifacts/contracts/core/funds/GenesisFund.sol/GenesisFund');
 
 describe("Genesis Funds Tests", () => {
   
@@ -46,8 +46,7 @@ describe("Genesis Funds Tests", () => {
   });
 
   it("should create fund", async () => {
-    let fund = await createFund("testFund", "GVTEST", 1000);
-    
+    let [fund, realFundAddress] = await createFund("testFund", "GVTEST", 1000, [weth.address]);
     let supply = await fund.connect(managerAccount).totalSupply.call();
     expect(supply).to.equal(1000000);
 
@@ -63,58 +62,30 @@ describe("Genesis Funds Tests", () => {
 
 
   it("should first relocate fund", async () => {
-    let whiteList = [weth.address];
-    let quantities = [1000];
-    await weth.deposit(managerAccount.address, 1000);
-    await weth.connect(managerAccount).approve(transferProxy.address, 1000);
-
-    await transferProxy.connect(managerAccount).batchDeposit(whiteList, quantities);
-    let accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
-
-    expect(accountBalance).to.equal(1000);
-    // // Test create fund
-    await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
-
-    let fundAddress = await genesis.connect(managerAccount).createFund("testFund", "GVTEST", whiteList, 1000, 1);
-    let res = await fundAddress.wait();
-
-    let realFundAddress = res.logs[res.logs.length - 2].address;
-
-    let fund = new ethers.Contract(realFundAddress, GenesisFundContract.abi, ethers.getDefaultProvider());
-
-    let assets = [weth.address];
-
-    await fund.connect(managerAccount).init(assets);
+    var asset1 = "0x0000000000000000000000000000000000000001";
+    var asset2 = "0x0000000000000000000000000000000000000002";
     
-    let supply = await fund.connect(managerAccount).totalSupply.call();
-    expect(supply).to.equal(1000000);
+    let [fund, realFundAddress] = await createFund("testFund", "GVTEST", 1000, [weth.address, asset1, asset2]);
 
-    let managerAmount = await fund.connect(managerAccount).balanceOf(managerAccount.address);
-    expect(managerAmount).to.equal(1000000 - 100);
-
-    accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
-    expect(accountBalance).to.equal(0);
-
-    accountBalance = await treasury.getOwnerBalance(weth.address, realFundAddress);
-    expect(accountBalance).to.equal(1000);
+    await expect(fund.connect(managerAccount).relocate([asset1, asset2], [5000, 5000]))
+         .to.emit(fund, 'RelocateRequest')
+         .withArgs(1);
   });
   
-  async function createFund(name, ticket, initDeposit){
-    let whiteList = [weth.address];
+  async function createFund(name, ticket, initDeposit, whiteList){
     let quantities = [initDeposit];
     await weth.deposit(managerAccount.address, initDeposit);
     await weth.connect(managerAccount).approve(transferProxy.address, initDeposit);
 
-    await transferProxy.connect(managerAccount).batchDeposit(whiteList, quantities);
+    await transferProxy.connect(managerAccount).batchDeposit([weth.address], quantities);
     let accountBalance = await treasury.getOwnerBalance(weth.address, managerAccount.address);
 
     expect(accountBalance).to.equal(initDeposit);
-    // // Test create fund
+    // Test create fund
     await genesis.connect(managerAccount).setRequiredAssetAddress(weth.address);
 
     let fundAddress = await genesis.connect(managerAccount).createFund(name, ticket, whiteList, initDeposit, 1);
     let res = await fundAddress.wait();
-
     let realFundAddress = res.logs[res.logs.length - 2].address;
 
     let fund = new ethers.Contract(realFundAddress, GenesisFundContract.abi, ethers.getDefaultProvider());
@@ -122,7 +93,6 @@ describe("Genesis Funds Tests", () => {
     let assets = [weth.address];
 
     await fund.connect(managerAccount).init(assets);
-
-    return fund;
+    return [fund, realFundAddress];
   }
 });

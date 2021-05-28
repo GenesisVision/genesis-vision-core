@@ -1,6 +1,6 @@
 const { expect } = require("chai");
 
-const GenesisProgramContract = require('../../build/contracts/GenesisProgram');
+const GenesisProgramContract = require('../../artifacts/contracts/core/programs/GenesisProgram.sol/GenesisProgram');
 
 describe("Genesis Programs Tests", () => {
   
