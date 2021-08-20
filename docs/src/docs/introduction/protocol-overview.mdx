@@ -1,0 +1,37 @@
+# Protocol structure overview
+The upper level of the protocol is based on the GenesisFund and GenesisProgram entities.
+
+![UML](https://doc.genesis.vision/uml.png)
+
+
+GenesisFund and GenesisProgram are based on the **GenesisCoffer** entity, which implements the ERC-20 (or BEP-20 for BSC) interface. It allows you to:
+- Issue and Redeem tokens secured by assets in GenesisCoffer
+- Work with the fund as with a regular ERC-20 token
+- Calculate and pay the Management Fee (annual percent)
+
+Although **Program** and **Fund** entities look similar and serve the same purpose as an asset management tool, their approaches are different.
+
+The **Program** is managed directly by the manager's trade transactions. 
+
+The **Fund** is managed in a declarative manner by setting up required assets allocations. Trading operations are carried out automatically.
+
+**GenesisCore** is a liaison contract with the Genesis Vision Protocol. Its main functions are:
+- Creation of Funds and Programs
+- Managing the list of supported assets
+- Managing the list of available liquidity pools
+
+
+## Fund or program creation:
+To create a fund or program, the manager must define the following initial parameters:
+- Fund/Program Name
+- Token Symbol (ticker)
+- Initial token supply
+- Management Fee (annual percent)
+
+
+## Investing in a Fund or Program
+Investing in a Fund or Program can be done in two ways:
+- Purchase already issued ERC-20 tokens of the Fund/Program from other investors
+- Issue new tokens through the investment directly in the Fund/Program
+
+

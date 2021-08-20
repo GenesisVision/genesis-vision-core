@@ -1,0 +1,39 @@
+# Sidebar navigation
+
+- label: 'introduction'
+  link: '/'
+  items:
+    - label: 'Overview'
+      link: '/introduction/overview'
+    - label: 'Protocol overview'
+      link: '/introduction/protocol-overview'
+    - label: 'Ecosystem participants'
+      link: '/introduction/ecosystem-participants'
+    - label: 'Issue & Redeem'
+      link: '/introduction/issue-redeem'
+    - label: 'How to Create Fund'
+      link: '/introduction/how-create-fund'
+# - label: Smart contracts
+#   items:
+#     - label: 'Description'
+#       link: '/smart-contracts/description'
+    # - label: 'Creating docs'
+    #   link: '/usage/creating-docs'
+    # - label: 'Navigation'
+    #   link: '/usage/navigation'
+    # - label: 'Shadowing'
+    #   link: '/usage/shadowing'
+
+- label: Resources
+  items:
+    - label: 'Telegram chat'
+      link: https://t.me/genesisvision
+    - label: 'Github'
+      link: https://github.com/GenesisVision
+    - label: 'Twitter'
+      link: https://twitter.com/genesis_vision
+    - label: 'Blog'
+      link: https://blog.genesis.vision
+    - label: 'Whitepaper'
+      link: https://genesis.vision/white-paper-eng.pdf
+  
