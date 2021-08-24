@@ -107,3 +107,68 @@ export interface FundCreateAssetPlatformInfo {
   maxExitFee: number;
   minDeposit: number;
 }
+
+export interface AssetDetails {
+  id: string;
+  logoUrl: string;
+  color: string;
+  title: string;
+  url: string;
+  assetType: AssetType;
+  programDetails: ProgramAssetDetails;
+}
+
+export type AssetType = "None" | "Program" | "Fund" | "Follow";
+export interface ProgramAssetDetails {
+  level: number;
+  levelProgress: number;
+}
+
+export interface WalletData {
+  currency: Currency;
+  available: number;
+  invested: number;
+  trading: number;
+  pending: number;
+  readonly total: number;
+  availableCcy: number;
+  investedCcy: number;
+  tradingCcy: number;
+  pendingCcy: number;
+  readonly totalCcy: number;
+  id: string;
+  title: string;
+  logoUrl: string;
+  isDepositEnabled: boolean;
+  isWithdrawalEnabled: boolean;
+  depositAddresses: Array<WalletDepositData>;
+  withdrawalCommissions: Array<WalletWithdrawalCurrencyInfo>;
+  depositUrlCoindirect: string;
+}
+
+export interface WalletDepositData {
+  address: string;
+  blockchain: Blockchain;
+  blockchainTitle: string;
+}
+
+export type Blockchain =
+  | "None"
+  | "Bitcoin"
+  | "Ethereum"
+  | "BinanceSmartChain"
+  | "xDaiChain";
+
+export interface WalletWithdrawalCurrencyInfo {
+  value: number;
+  blockchain: Blockchain;
+  blockchainTitle: string;
+}
+export interface WalletBaseData {
+  id: string;
+  title: string;
+  logoUrl: string;
+  currency: Currency;
+  available: number;
+  rate: number;
+}

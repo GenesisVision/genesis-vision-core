@@ -56,12 +56,12 @@ export const Dialog: React.FC<IDialogProps> = ({
   open,
   onClose,
   className,
-  children,
+  children
 }) => {
   const [target, setTarget] = useState<EventTarget | null>(null);
 
   const handleBackdropClick = useCallback(
-    (event) => {
+    event => {
       if (target === event.currentTarget && onClose) {
         onClose(event);
       }
@@ -69,7 +69,7 @@ export const Dialog: React.FC<IDialogProps> = ({
     [onClose, target]
   );
 
-  const handleMouseDown = useCallback((event) => {
+  const handleMouseDown = useCallback(event => {
     setTarget(event.target);
   }, []);
 

@@ -1,17 +1,17 @@
 import AppLayout from "components/app-layout/app-layout";
-import CreateDeFiFundSettingsSection from "components/create-defi-fund-settings/create-defi-fund-settings-section";
+import CreateDefiFundPage from "pages/create-defi-fund.page";
+import DefiExchangePage from "pages/defi-exchange.page";
 import React from "react";
-import { Row } from "shared/row/row";
+import { Route, Switch } from "react-router-dom";
 
 const App = () => {
   return (
     <AppLayout>
-      <Row>
-        <h1>Create DeFi Fund</h1>
-      </Row>
-      <Row onlyOffset size={"large"}>
-        <CreateDeFiFundSettingsSection />
-      </Row>
+      <Switch>
+        <Route exact path="/" component={CreateDefiFundPage} />
+        <Route path="/exchange" component={DefiExchangePage} />
+        <Route render={() => <div>404</div>} />
+      </Switch>
     </AppLayout>
   );
 };
