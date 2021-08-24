@@ -114,7 +114,7 @@ const _GVTextArea: React.FC<GVTextAreaProps> = ({
         onKeyDown({
           ...event,
           ref: textareaRef.current,
-          preventDefault: () => event.preventDefault(),
+          preventDefault: () => event.preventDefault()
         });
       }
       if (CHANGE_CARET_KEYS.includes(event.keyCode)) setCaretChanged();

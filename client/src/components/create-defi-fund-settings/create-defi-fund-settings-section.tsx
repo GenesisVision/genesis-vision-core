@@ -1,7 +1,7 @@
 import React from "react";
 import useSWR from "swr";
 import CreateDeFiFundSettings, {
-  ICreateDeFiFundSettingsFormValues,
+  ICreateDeFiFundSettingsFormValues
 } from "./create-defi-fund-settings";
 
 const _CreateDeFiFundSettingsSection: React.FC = () => {

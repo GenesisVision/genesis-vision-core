@@ -5,13 +5,13 @@ import {
   FundAssetPart,
   PlatformAsset,
   PlatformAssetFull,
-  ProviderPlatformAssets,
+  ProviderPlatformAssets
 } from "utils/gv-api.types";
 import { safeGetElemFromArray } from "utils/helpers";
 import {
   composeSelectedAssets,
   getRemainder,
-  getRemainderWithoutSelected,
+  getRemainderWithoutSelected
 } from "../reallocation.helpers";
 import AddAsset from "./add-asset/add-asset";
 import { TRegulatorInputHandle } from "./add-asset/add-asset-list";
@@ -47,7 +47,7 @@ const _ReallocateField: React.FC<IReallocateFieldProps> = ({
   error,
   touched,
   onChange,
-  onBlur,
+  onBlur
 }) => {
   const { anchor, setAnchor, clearAnchor } = useAnchor();
   const [stateAssets, setStateAssets] = useState<PlatformAssetFull[]>(
@@ -61,16 +61,16 @@ const _ReallocateField: React.FC<IReallocateFieldProps> = ({
   const submitChanges = useCallback(() => {
     onChange({
       target: {
-        value: stateAssets.filter((asset) => asset.percent > 0),
-        name,
-      },
+        value: stateAssets.filter(asset => asset.percent > 0),
+        name
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateAssets, name]);
 
   useEffect(() => {
     if (!newAsset) return;
-    const assets = stateAssets.map((item) =>
+    const assets = stateAssets.map(item =>
       item.asset === newAsset.asset ? newAsset : item
     );
     setStateAssets(assets);
@@ -83,8 +83,8 @@ const _ReallocateField: React.FC<IReallocateFieldProps> = ({
       onBlur &&
         onBlur({
           target: {
-            name,
-          },
+            name
+          }
         });
       submitChanges();
     }
@@ -106,7 +106,7 @@ const _ReallocateField: React.FC<IReallocateFieldProps> = ({
         );
         setNewAsset({
           ...asset,
-          percent: Math.min(remainderWithoutSelected, Math.abs(value)),
+          percent: Math.min(remainderWithoutSelected, Math.abs(value))
         });
       },
     [stateAssets]
@@ -129,10 +129,10 @@ const _ReallocateField: React.FC<IReallocateFieldProps> = ({
   );
 
   const handleRemove: FundAssetRemoveType = useCallback(
-    (currency) => () => {
+    currency => () => {
       const asset = safeGetElemFromArray(
         stateAssets,
-        (item) => item.asset === currency
+        item => item.asset === currency
       );
       setNewAsset({ ...asset, percent: asset.mandatoryFundPercent });
       submitChanges();
@@ -147,7 +147,7 @@ const _ReallocateField: React.FC<IReallocateFieldProps> = ({
         scheduleMessage={scheduleMessage}
         touched={touched}
         error={error}
-        assets={stateAssets.filter((item) => item.percent > 0)}
+        assets={stateAssets.filter(item => item.percent > 0)}
         remainder={remainder}
         removeHandle={handleRemove}
         addHandle={setAnchor}

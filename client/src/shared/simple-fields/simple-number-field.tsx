@@ -2,7 +2,7 @@ import React from "react";
 import NumberFormat, { NumberFormatValues } from "react-number-format";
 import { ISimpleFieldProps, SimpleField } from "./simple-field";
 
-const _SimpleNumberField: React.FC<ISimpleNumberFieldProps> = (props) => {
+const _SimpleNumberField: React.FC<ISimpleNumberFieldProps> = props => {
   return (
     <SimpleField
       {...props}

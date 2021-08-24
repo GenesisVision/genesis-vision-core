@@ -50,7 +50,7 @@ const GVProgramPeriod: React.FC<GVProgramPeriodProps> = ({
   start,
   end,
   value,
-  variant = "pie",
+  variant = "pie"
 }) => {
   const valuePercent = calcPercent(value, start, end);
   if (variant === "pie")

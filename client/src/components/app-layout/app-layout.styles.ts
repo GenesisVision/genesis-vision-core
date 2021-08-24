@@ -6,7 +6,7 @@ import {
   $paddingBig,
   $paddingBigMobile,
   $paddingSmallMobile,
-  $paddingXsmall,
+  $paddingXsmall
 } from "styles/sizes";
 
 const PAGE_WIDTH = LARGE_DESKTOP - 40;

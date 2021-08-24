@@ -45,7 +45,7 @@ const _FundAssetRatio: React.FC<Props> = ({
   showBounds = true,
   values,
   handleHover,
-  handleLeave,
+  handleLeave
 }) => {
   let ZIndex = values.length;
   let newLevel = 0;

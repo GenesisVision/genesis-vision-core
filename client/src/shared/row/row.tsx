@@ -6,7 +6,7 @@ import {
   $paddingSmall,
   $paddingXsmall,
   $paddingXxsmall,
-  $paddingXxxsmall,
+  $paddingXxxsmall
 } from "styles/sizes";
 
 import { IRowProps } from "./row.types";

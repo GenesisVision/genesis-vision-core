@@ -25,13 +25,13 @@ const Tabs = styled(Row)`
 `;
 
 const GVTabs: React.FC<GVTabsProps> = ({ value, onChange, children }) => {
-  const tabs = children.map((child) => {
+  const tabs = children.map(child => {
     const childValue = child.props.value;
     const selected = childValue === value;
     return React.cloneElement(child, {
       key: childValue,
       selected,
-      onChange,
+      onChange
     });
   });
   return <Tabs>{tabs}</Tabs>;

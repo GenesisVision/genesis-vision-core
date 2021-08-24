@@ -32,7 +32,7 @@ const _ImageBase: React.FC<IImageBaseProps> = ({
   alt,
   defaultImage,
   className,
-  defaultImageClassName,
+  defaultImageClassName
 }) => {
   return (
     <ImageBaseElement

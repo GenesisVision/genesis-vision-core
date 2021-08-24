@@ -7,18 +7,18 @@ import Modal from "shared/modal/modal";
 export enum VERTICAL_POPOVER_POS {
   TOP = "top",
   BOTTOM = "bottom",
-  CENTER = "center",
+  CENTER = "center"
 }
 export enum HORIZONTAL_POPOVER_POS {
   LEFT = "left",
   RIGHT = "right",
   CENTER = "center",
-  RELATIVE = "relative",
+  RELATIVE = "relative"
 }
 export enum ORIENTATION_POPOVER {
   LEFT = "left",
   RIGHT = "right",
-  CENTER = "center",
+  CENTER = "center"
 }
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
@@ -44,7 +44,7 @@ const MARGIN_OFFSET = 10;
 const getAnchorEl = (el?: anchorElType) =>
   typeof el === "function" ? el() : el;
 
-const Popover: React.FC<Props> = (props) => {
+const Popover: React.FC<Props> = props => {
   const {
     fixedHorizontal,
     onMouseEnter,
@@ -57,7 +57,7 @@ const Popover: React.FC<Props> = (props) => {
     noPadding,
     className,
     ownWidth,
-    children,
+    children
   } = props;
   const [windowHeight, setWindowHeight] = useState<number>(0);
   const [scrollTop, setScrollTop] = useState<number>(0);

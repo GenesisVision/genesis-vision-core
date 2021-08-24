@@ -1,7 +1,7 @@
 import AssetRow from "components/assets/asset-fields/asset-row";
 import FundAssetRatio from "components/fund-asset-ratio/fund-asset-ratio";
 import FundAssetContainer, {
-  FundAssetRemoveType,
+  FundAssetRemoveType
 } from "components/fund-asset/fund-asset.container";
 import React, { MouseEventHandler, useCallback, useState } from "react";
 import AddButton from "shared/add-button/add-button";
@@ -30,7 +30,7 @@ const _AssetsComponent: React.FC<Props> = ({
   assets = [],
   remainder,
   removeHandle = () => () => {},
-  addHandle = () => {},
+  addHandle = () => {}
 }) => {
   const [hoveringAssetName, setHoveringAssetName] = useState<
     string | undefined

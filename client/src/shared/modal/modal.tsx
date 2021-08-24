@@ -60,7 +60,7 @@ const _Modal: React.FC<Props> = ({
   absolute = true,
   transparentBackdrop,
   children,
-  fixed,
+  fixed
 }) => {
   const handleKeyPress = useCallback(
     (event: KeyboardEvent & React.MouseEvent<HTMLElement>) =>

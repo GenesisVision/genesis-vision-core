@@ -54,7 +54,7 @@ export const _AssetFormField: React.FC<
   type,
   hintContent,
   hintTooltipContent,
-  disabled,
+  disabled
 }) => {
   const trimmedLength = (typeof value === "string" ? value : "").trim().length;
   return (

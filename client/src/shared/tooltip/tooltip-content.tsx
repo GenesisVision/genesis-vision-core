@@ -20,7 +20,7 @@ const Container = styled.div<{ small?: boolean }>`
 const _TooltipContent: React.FC<Props> = ({
   small,
   children,
-  fixed = true,
+  fixed = true
 }) => {
   return (
     <PopoverContentCardBlock size={"small"} fixed={fixed}>

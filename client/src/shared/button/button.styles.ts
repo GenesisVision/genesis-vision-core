@@ -6,7 +6,7 @@ import {
   $primaryColor,
   $secondaryColor,
   $textAccentColor,
-  $textColor,
+  $textColor
 } from "styles/colors";
 import { getBoxShadowValue, transition } from "styles/mixins";
 import { IButtonProps, ILabelProps, ISuccessMarkProps } from "./button.types";
@@ -19,7 +19,7 @@ import {
   $fontSizeParagraph,
   $fontSizeXxsmall,
   $paddingSmall,
-  $paddingXxsmall,
+  $paddingXxsmall
 } from "styles/sizes";
 
 const pending = keyframes`
@@ -32,7 +32,7 @@ const pending = keyframes`
   `;
 
 export const LabelStyles = {
-  ...transition("opacity"),
+  ...transition("opacity")
 };
 
 export const LabelDynamicStyles = css`
@@ -41,7 +41,7 @@ export const LabelDynamicStyles = css`
 
 export const SuccessMarkStyles = {
   position: "absolute",
-  ...transition("opacity"),
+  ...transition("opacity")
 };
 
 export const SuccessMarkDynamicStyles = css`
@@ -111,7 +111,7 @@ export const ButtonDynamicStyles = css`
   background-color: ${({
     variant = "contained",
     color = "primary",
-    isSuccessful,
+    isSuccessful
   }: IButtonProps) => {
     if (isSuccessful) return $positiveColor;
     switch (variant) {
@@ -134,7 +134,7 @@ export const ButtonDynamicStyles = css`
   }};
   border-color: ${({
     variant = "contained",
-    color = "primary",
+    color = "primary"
   }: IButtonProps) => {
     switch (variant) {
       case "contained":
@@ -237,7 +237,7 @@ export const ButtonDynamicStyles = css`
       variant = "contained",
       isPending,
       disabled,
-      isSuccessful,
+      isSuccessful
     }: IButtonProps) => {
       if (isSuccessful || disabled || isPending || variant === "outlined")
         return "none";

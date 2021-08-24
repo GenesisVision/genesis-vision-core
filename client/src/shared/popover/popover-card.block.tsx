@@ -5,7 +5,7 @@ import {
   adaptiveFullPadding,
   fontSize,
   horizontalPaddings,
-  verticalPaddings,
+  verticalPaddings
 } from "styles/mixins";
 import {
   $fontSizeCommon,
@@ -14,7 +14,7 @@ import {
   $paddingXsmall,
   $popoverPaddingLarge,
   $popoverPaddingMedium,
-  $popoverPaddingSmall,
+  $popoverPaddingSmall
 } from "styles/sizes";
 import { SizesType } from "utils/types";
 

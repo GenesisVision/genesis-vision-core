@@ -26,7 +26,7 @@ const StyledDiv = styled.div<Props>`
   ${GVInputStyles}
 `;
 
-const _GvInput: React.FC<Props> = (props) => {
+const _GvInput: React.FC<Props> = props => {
   const {
     showError = true,
     noMargin,
@@ -38,7 +38,7 @@ const _GvInput: React.FC<Props> = (props) => {
     touched,
     error,
     inputElement,
-    adornmentPosition = "end",
+    adornmentPosition = "end"
   } = props;
   return (
     <GvInputWrapper margin={!noMargin} wide={wide}>

@@ -2,7 +2,7 @@ import useAnchor from "hooks/anchor.hook";
 import React, { useCallback, useEffect, useState } from "react";
 import Popover, {
   HORIZONTAL_POPOVER_POS,
-  VERTICAL_POPOVER_POS,
+  VERTICAL_POPOVER_POS
 } from "shared/popover/popover";
 import { RowItem } from "shared/row-item/row-item";
 import {
@@ -10,13 +10,13 @@ import {
   FundAssetPartWithIcon,
   FundAssetPercent,
   FundAssetViewType,
-  PlatformAssetFull,
+  PlatformAssetFull
 } from "utils/gv-api.types";
 import FundAssetTooltipContainer from "./fund-asset-tooltip/fund-asset-tooltip.container";
 import {
   FundAssetRemainder,
   FundAssets,
-  FundAssetsContainer,
+  FundAssetsContainer
 } from "./fund-asset.styles";
 import HidedAssetsLabel from "./hided-assets-label";
 
@@ -73,7 +73,7 @@ const renderFundAsset =
     removable,
     removeHandle,
     lightTheme,
-    assetsLength,
+    assetsLength
   }: {
     bottomOffset?: boolean;
     type: FundAssetViewType;
@@ -110,7 +110,7 @@ const _FundAssetContainer: React.FC<IFundAssetContainerProps> = ({
   removable,
   lightTheme,
   removeHandle,
-  hoveringAsset,
+  hoveringAsset
 }) => {
   const [size, setSize] = useState<number | undefined>(sizeProp);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,7 +127,7 @@ const _FundAssetContainer: React.FC<IFundAssetContainerProps> = ({
           removeHandle,
           lightTheme,
           hoveringAsset,
-          assetsLength: assets.length,
+          assetsLength: assets.length
         })
       )}
       {size && size < (length || assets.length) && (
@@ -166,7 +166,7 @@ const HidedFundAssets: React.FC<IHidedFundAssetsProps> = React.memo(
     setSize,
     removable,
     removeHandle,
-    hoveringAsset,
+    hoveringAsset
   }) => {
     const { anchor, setAnchor, clearAnchor } = useAnchor();
     const handleOpen = useCallback(
@@ -200,7 +200,7 @@ const HidedFundAssets: React.FC<IHidedFundAssetsProps> = React.memo(
                 removable,
                 removeHandle,
                 hoveringAsset,
-                assetsLength: assets.length,
+                assetsLength: assets.length
               })
             )}
           </FundAssetsContainer>

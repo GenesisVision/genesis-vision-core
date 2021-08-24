@@ -9,13 +9,13 @@ import {
   adaptiveFullPadding,
   fontSize,
   height,
-  lineHeight,
+  lineHeight
 } from "styles/mixins";
 import {
   $borderRadiusMiddle,
   $fontSizeSmall,
   $paddingXsmall,
-  $paddingXxsmall,
+  $paddingXxsmall
 } from "styles/sizes";
 import { FundAssetViewType } from "utils/gv-api.types";
 

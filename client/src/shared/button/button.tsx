@@ -4,7 +4,7 @@ import { transition } from "styles/mixins";
 import {
   ButtonDynamicStyles,
   LabelDynamicStyles,
-  SuccessMarkDynamicStyles,
+  SuccessMarkDynamicStyles
 } from "./button.styles";
 import { IButtonProps, ILabelProps } from "./button.types";
 
@@ -23,13 +23,13 @@ const StyledButton = styled.button<IButtonProps>`
   ${ButtonDynamicStyles}
 `;
 
-const _Button: React.FC<IButtonProps> = (props) => {
+const _Button: React.FC<IButtonProps> = props => {
   const {
     type = "button",
     isSuccessful,
     successSymbol = true,
     children,
-    testId,
+    testId
   } = props;
   return (
     <StyledButton data-test-id={testId} {...props} type={type}>

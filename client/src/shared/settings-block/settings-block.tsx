@@ -60,7 +60,7 @@ const SettingsBlock: React.FC<Props> = ({
   withBorder = true,
   blockNumber,
   label,
-  children,
+  children
 }) => (
   <Container size={!blockNumber ? "xlarge" : undefined} center={false}>
     <LineBlock>

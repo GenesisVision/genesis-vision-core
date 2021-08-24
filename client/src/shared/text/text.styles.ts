@@ -4,7 +4,7 @@ import {
   $negativeColor,
   $positiveColor,
   $textLightColor,
-  $yellow,
+  $yellow
 } from "styles/colors";
 import { fontSize } from "styles/mixins";
 import {
@@ -12,7 +12,7 @@ import {
   $fontSizeH2,
   $fontSizeH4,
   $fontSizeSmall,
-  $fontSizeXsmall,
+  $fontSizeXsmall
 } from "styles/sizes";
 import { ITextProps } from "./text.types";
 

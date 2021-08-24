@@ -6,7 +6,7 @@ import styled from "styled-components";
 import GVTextArea from "./gv-text-area";
 import { GVTextFieldProps, gvTextFieldStyle } from "./gv-text-field.styles";
 
-const _GVTextField: React.FC<GVTextFieldProps> = (props) => {
+const _GVTextField: React.FC<GVTextFieldProps> = props => {
   const {
     className,
     onFocus,

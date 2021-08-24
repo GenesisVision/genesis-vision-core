@@ -6,12 +6,12 @@ import {
   $paddingSmall,
   $paddingXsmall,
   $paddingXxsmall,
-  $paddingXxxsmall,
+  $paddingXxxsmall
 } from "styles/sizes";
 import { IRowItemProps } from "./row-item.types";
 
 export const RowItemStaticStyles = {
-  "box-sizing": "border-box",
+  "box-sizing": "border-box"
 };
 
 const getOffset = (size: number, bottom: boolean) => {

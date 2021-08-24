@@ -19,7 +19,7 @@ const _Hint: React.FC<Props> = ({
   content,
   tooltipContent,
   className,
-  vertical,
+  vertical
 }) => {
   return (
     <div className={className}>

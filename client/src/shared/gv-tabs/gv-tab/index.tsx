@@ -5,7 +5,7 @@ import {
   $labelColor,
   $primaryColor,
   $secondaryColor,
-  $textLightColor,
+  $textLightColor
 } from "styles/colors";
 import {
   adaptiveBorderRadius,
@@ -14,7 +14,7 @@ import {
   fontSize,
   horizontalPaddings,
   transition,
-  verticalPaddings,
+  verticalPaddings
 } from "styles/mixins";
 import { $fontSizeCommon, $paddingXxxsmall } from "styles/sizes";
 
@@ -91,7 +91,7 @@ const GVTab: React.FC<GVTabProps> = ({
   selected,
   visible = true,
   onChange,
-  onClick,
+  onClick
 }) => {
   const handleChange = useCallback(
     (e: React.SyntheticEvent<EventTarget>) => {

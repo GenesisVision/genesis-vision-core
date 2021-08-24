@@ -5,7 +5,7 @@ import { css } from "styled-components";
 import {
   $panelBackgroundColor,
   $textDarkColor,
-  $textLightColor,
+  $textLightColor
 } from "styles/colors";
 import { $fontSizeCommon, $fontSizeH4 } from "styles/sizes";
 import { Sizeable } from "utils/types";

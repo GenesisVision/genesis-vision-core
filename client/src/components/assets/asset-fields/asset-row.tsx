@@ -2,7 +2,7 @@ import React from "react";
 import { Row } from "shared/row/row";
 
 export const AssetRow: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
-  children,
+  children
 }) => {
   return (
     <Row center={false} wrap>

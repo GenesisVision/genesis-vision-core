@@ -28,7 +28,7 @@ export const StyledCenter = styled(Center)`
 `;
 
 export const AssetFields: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
-  children,
+  children
 }) => <StyledCenter wrap>{children}</StyledCenter>;
 
 export default AssetField;

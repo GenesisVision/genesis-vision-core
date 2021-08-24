@@ -6,7 +6,7 @@ const _HidedAssets: React.FC<Props> = ({
   type,
   count,
   handleOpen,
-  canExpand = true,
+  canExpand = true
 }) => {
   switch (type) {
     case "text":

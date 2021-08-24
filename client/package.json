@@ -14,12 +14,12 @@
     "husky": "^6.0.0",
     "lazysizes": "^5.3.2",
     "lint-staged": "^11.0.0",
-    "prettier": "^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-event-listener": "^0.6.6",
     "react-hook-form": "4.8.0",
     "react-number-format": "^4.6.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "styled-components": "^5.3.0",
     "swr": "^0.5.6",
@@ -62,6 +62,9 @@
   },
   "devDependencies": {
     "@types/react-event-listener": "^0.4.12",
-    "@types/styled-components": "^5.1.9"
+    "@types/react-router-dom": "^5.1.8",
+    "@types/styled-components": "^5.1.9",
+    "eslint-plugin-prettier": "^3.4.1",
+    "prettier": "^2.3.2"
   }
 }

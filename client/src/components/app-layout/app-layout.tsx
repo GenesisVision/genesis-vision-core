@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   appMainStyles,
   appStyles,
-  appWrapperStyles,
+  appWrapperStyles
 } from "./app-layout.styles";
 
 const App = styled.div`

@@ -93,7 +93,7 @@ const Regulator: React.FC<Props> = ({
   value,
   handleUp,
   handleDown,
-  children,
+  children
 }) => {
   const handleClickMinus = useCallback(
     (event: React.SyntheticEvent<HTMLElement>) => {

@@ -5,7 +5,7 @@ import { Currency, FundAssetInfo, FundAssetViewType } from "utils/gv-api.types";
 import {
   FundAssetCurrencyItem,
   FundAssetRemoveButton,
-  FundAssetRow,
+  FundAssetRow
 } from "./fund-asset.styles";
 
 interface Props extends FundAssetInfo {

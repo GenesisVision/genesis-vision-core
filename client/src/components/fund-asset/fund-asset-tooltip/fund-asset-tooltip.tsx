@@ -12,7 +12,7 @@ interface IFundAssetTooltipProps {
 
 const _FundAssetTooltip: React.FC<IFundAssetTooltipProps> = ({
   name,
-  currency,
+  currency
 }) => (
   <TooltipContent fixed={false}>
     <Center>

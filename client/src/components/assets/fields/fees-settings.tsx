@@ -32,7 +32,7 @@ const _FeesSettings: React.FC<Props> = ({
   secondFeeLabel,
   secondFeeUnderText,
   secondFeeDescription,
-  secondFeeRules,
+  secondFeeRules
 }) => {
   return (
     <div>

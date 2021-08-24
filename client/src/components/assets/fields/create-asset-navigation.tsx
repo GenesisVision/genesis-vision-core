@@ -10,7 +10,7 @@ interface Props {
 const _CreateAssetNavigation: React.FC<Props> = ({
   isSubmitting,
   disabled,
-  isSuccessful,
+  isSuccessful
 }) => {
   return (
     <SubmitButton

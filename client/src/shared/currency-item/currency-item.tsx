@@ -12,13 +12,13 @@ import {
   $dividerTitle,
   $fontSizeParagraph,
   $fontSizeSmall,
-  $walletItemSize,
+  $walletItemSize
 } from "styles/sizes";
 import { CurrencyEnum } from "utils/gv-api.types";
 
 export enum Themes {
   LIGHT = "Light",
-  DARK = "Dark",
+  DARK = "Dark"
 }
 
 type ThemePropsType = { theme?: Themes };
@@ -98,7 +98,7 @@ const _CurrencyItem: React.FC<ICurrencyItemProps> = ({
   small,
   theme = Themes.DARK,
   clickable = true,
-  showTitle = true,
+  showTitle = true
 }) => {
   const [isOpenPopup, setOpenPopup, setClosePopup] = useIsOpen();
   const openPopup = useCallback(

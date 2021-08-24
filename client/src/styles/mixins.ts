@@ -95,6 +95,6 @@ export const transition = (...args: string[]) => {
     "transition-duration": "400ms",
     "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)",
     "transition-delay": "0s",
-    "will-change": props,
+    "will-change": props
   };
 };

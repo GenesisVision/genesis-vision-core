@@ -3,7 +3,7 @@ import {
   $backgroundColor,
   $primaryColor,
   $textDarkColor,
-  $textLightColor,
+  $textLightColor
 } from "styles/colors";
 import { adaptivePadding, fontSize } from "styles/mixins";
 import {
@@ -13,7 +13,7 @@ import {
   $fontSizeH3,
   $fontSizeH4,
   $fontSizeParagraph,
-  $paddingXxsmall,
+  $paddingXxsmall
 } from "styles/sizes";
 
 export const RootStyle = css`

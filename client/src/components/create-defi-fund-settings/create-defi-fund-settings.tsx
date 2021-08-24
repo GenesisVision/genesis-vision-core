@@ -26,7 +26,7 @@ export enum CREATE_DEFI_FUND_FIELDS {
   title = "title",
   exitFee = "exitFee",
   assets = "assets",
-  initialTokensAmount = "initialTokensAmount",
+  initialTokensAmount = "initialTokensAmount"
 }
 
 interface Props {
@@ -39,16 +39,16 @@ interface Props {
 const _CreateDeFiFundSettings: React.FC<Props> = ({
   createFundInfo,
   errorMessage,
-  onSubmit,
+  onSubmit
 }) => {
   const { maxExitFee, maxEntryFee, minDeposit } = createFundInfo;
 
   const form = useForm<ICreateDeFiFundSettingsFormValues>({
     defaultValues: {
       [CREATE_DEFI_FUND_FIELDS.entryFee]: undefined,
-      [CREATE_DEFI_FUND_FIELDS.exitFee]: undefined,
+      [CREATE_DEFI_FUND_FIELDS.exitFee]: undefined
     },
-    mode: "onChange",
+    mode: "onChange"
   });
 
   return (
@@ -78,14 +78,14 @@ const _CreateDeFiFundSettings: React.FC<Props> = ({
         />
       </SettingsBlock>
       {/* <DepositDetailsBlock
-                blockNumber={selfManaged ? 3 : 4}
-                walletFieldName={CREATE_DEFI_FUND_FIELDS.depositWalletId}
-                inputName={CREATE_DEFI_FUND_FIELDS.depositAmount}
-                depositAmount={depositAmount}
-                minimumDepositAmount={minDeposit}
-                setFieldValue={setValue}
-                assetCurrency={FUND_CURRENCY}
-            /> */}
+        blockNumber={selfManaged ? 3 : 4}
+        walletFieldName={CREATE_DEFI_FUND_FIELDS.depositWalletId}
+        inputName={CREATE_DEFI_FUND_FIELDS.depositAmount}
+        depositAmount={depositAmount}
+        minimumDepositAmount={minDeposit}
+        setFieldValue={setValue}
+        assetCurrency={FUND_CURRENCY}
+      /> */}
       <Row size={"large"}>
         <CreateAssetNavigation isSuccessful={!errorMessage} />
       </Row>

@@ -20,7 +20,7 @@ export const GVHookFormField: React.FC<GVHookFormFieldProps> = ({
     watch,
     formState: { touched, isSubmitting },
     errors,
-    register,
+    register
   } = useFormContext();
   const [error, setError] = useState<any>();
   useEffect(() => {

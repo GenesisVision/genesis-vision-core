@@ -88,7 +88,7 @@ const AssetLine: React.FC<AssetLineProps> = React.memo(
   )
 );
 
-const _AddAssetList: React.FC<Props> = (props) => {
+const _AddAssetList: React.FC<Props> = props => {
   const { remainder, assets, onDown, onUp, onPercentChange } = props;
   const providers = Object.keys(
     assets
@@ -102,7 +102,7 @@ const _AddAssetList: React.FC<Props> = (props) => {
   return (
     <table>
       <tbody>
-        {providers.map((provider) => {
+        {providers.map(provider => {
           return (
             <>
               {providers.length > 1 && (
@@ -113,8 +113,8 @@ const _AddAssetList: React.FC<Props> = (props) => {
                 </tr>
               )}
               {assets
-                .filter((asset) => asset.provider === provider)
-                .map((asset) => (
+                .filter(asset => asset.provider === provider)
+                .map(asset => (
                   <AssetLine
                     remainder={remainder}
                     asset={asset}

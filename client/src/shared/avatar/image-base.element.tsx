@@ -29,7 +29,7 @@ const _ImageBaseElement: React.FC<IImageBaseElementProps> = ({
   alt,
   defaultImage,
   className,
-  defaultImageClassName,
+  defaultImageClassName
 }) => {
   const hasUrl = src && src.length !== 0;
   const [isError, setIsError, setIsNotError] = useIsOpen();

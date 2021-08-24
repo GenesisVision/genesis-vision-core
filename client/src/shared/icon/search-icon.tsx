@@ -14,7 +14,7 @@ const StyledIcon = styled(Icon)`
   }
 `;
 
-export const SearchIcon: React.FC<IIconProps> = (props) => (
+export const SearchIcon: React.FC<IIconProps> = props => (
   <StyledIcon {...props}>
     <svg
       width="18"

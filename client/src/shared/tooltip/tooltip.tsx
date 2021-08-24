@@ -3,7 +3,7 @@ import React from "react";
 import { useCallback } from "react";
 import Popover, {
   HORIZONTAL_POPOVER_POS,
-  VERTICAL_POPOVER_POS,
+  VERTICAL_POPOVER_POS
 } from "shared/popover/popover";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
@@ -23,7 +23,7 @@ const Tooltip: React.FC<Props> = ({
   horizontal = HORIZONTAL_POPOVER_POS.CENTER,
   className,
   children,
-  disable,
+  disable
 }) => {
   const { anchor, setAnchor, clearAnchor } = useAnchor();
   const handleMouseEnter = useCallback(

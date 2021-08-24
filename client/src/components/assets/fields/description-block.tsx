@@ -12,7 +12,7 @@ interface Props {
 const _DescriptionBlock: React.FC<Props> = ({
   titleName,
   symbolName,
-  initialTokensAmountName,
+  initialTokensAmountName
 }) => {
   return (
     <div>

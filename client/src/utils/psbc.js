@@ -19,7 +19,7 @@ export const pSBC = (p, c0, c1, l) => {
     (c1 && !a)
   )
     return null;
-  const pSBCr = (d) => {
+  const pSBCr = d => {
     let n = d.length,
       x = {};
     if (n > 9) {
@@ -63,13 +63,13 @@ export const pSBC = (p, c0, c1, l) => {
             r: 0,
             g: 0,
             b: 0,
-            a: -1,
+            a: -1
           }
         : {
             r: 255,
             g: 255,
             b: 255,
-            a: -1,
+            a: -1
           }),
     (p = P ? p * -1 : p),
     (P = 1 - p);

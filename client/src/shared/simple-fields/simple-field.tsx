@@ -3,7 +3,7 @@ import React, { useCallback, useState } from "react";
 import GVTextField from "shared/gv-text-field";
 import { GVTextFieldProps } from "shared/gv-text-field/gv-text-field.styles";
 
-const _SimpleField: React.FC<Props> = (props) => {
+const _SimpleField: React.FC<Props> = props => {
   const {
     externalDirty,
     number,
@@ -15,7 +15,7 @@ const _SimpleField: React.FC<Props> = (props) => {
     emptyInit,
     value,
     InputComponent,
-    valueCallback,
+    valueCallback
   } = props;
   const [correct, setCorrect, setNotCorrect] = useIsOpen();
   const [dirty, setDirty] = useIsOpen();
@@ -46,7 +46,7 @@ const _SimpleField: React.FC<Props> = (props) => {
     showCorrect,
     error,
     value,
-    setFieldValue,
+    setFieldValue
   ]);
   const setEmpty = emptyInit && init;
   return (

@@ -6,7 +6,7 @@ import GVTextField from "shared/gv-text-field";
 import { SearchIcon } from "shared/icon/search-icon";
 import Popover, {
   HORIZONTAL_POPOVER_POS,
-  VERTICAL_POPOVER_POS,
+  VERTICAL_POPOVER_POS
 } from "shared/popover/popover";
 import { PopoverContent } from "shared/popover/popover-content";
 import { TRegulatorHandle } from "shared/regulator/regulator";
@@ -15,12 +15,12 @@ import styled from "styled-components";
 import {
   adaptiveFullPadding,
   adaptivePadding,
-  horizontalPaddings,
+  horizontalPaddings
 } from "styles/mixins";
 import {
   $paddingXsmall,
   $paddingXxsmall,
-  $popoverPaddingMedium,
+  $popoverPaddingMedium
 } from "styles/sizes";
 import { PlatformAssetFull, ProviderPlatformAssets } from "utils/gv-api.types";
 import AddAssetList, { TRegulatorInputHandle } from "./add-asset-list";
@@ -69,7 +69,7 @@ const _AddAsset: React.FC<Props> = ({
   handleCloseDropdown,
   handleDown,
   handleUp,
-  handlePercentChange,
+  handlePercentChange
 }) => {
   const tradingAssetObject = providers.reduce((prev, curr) => {
     return { ...prev, [curr.type]: curr };
@@ -85,7 +85,7 @@ const _AddAsset: React.FC<Props> = ({
     []
   );
   useEffect(() => {
-    const newList = assets.filter((item) =>
+    const newList = assets.filter(item =>
       searchValue
         ? ~(item.name + item.asset)
             .toUpperCase()
@@ -111,7 +111,7 @@ const _AddAsset: React.FC<Props> = ({
           <TitleBlock>
             <RowItem>
               <GVTabs onChange={setTab} value={tab}>
-                {tabs.map((tab) => {
+                {tabs.map(tab => {
                   const count = filteredAssets.filter(
                     ({ provider }) => provider === tab
                   ).length;

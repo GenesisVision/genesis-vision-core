@@ -13,7 +13,7 @@ const _FundAssetTooltipContainer: React.FC<Props> = ({
   type,
   removable,
   lightTheme,
-  removeHandle,
+  removeHandle
 }) => {
   return (
     <Tooltip

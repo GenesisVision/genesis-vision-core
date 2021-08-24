@@ -3,7 +3,7 @@ import useSWR from "swr";
 import { PlatformAssets } from "utils/gv-api.types";
 import ReallocateField, { IReallocateFieldProps } from "./reallocate-field";
 
-const _ReallocateFieldWrapper: React.FC<Props> = (props) => {
+const _ReallocateFieldWrapper: React.FC<Props> = props => {
   const { setFieldValue, name } = props;
 
   const { data: platformAssets } = useSWR<PlatformAssets>(

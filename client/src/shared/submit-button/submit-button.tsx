@@ -15,7 +15,7 @@ export const SubmitButton: React.FC<Props> = ({
   ...props
 }) => {
   const {
-    formState: { isSubmitted, isValid, dirty, isSubmitting },
+    formState: { isSubmitted, isValid, dirty, isSubmitting }
   } = useFormContext();
   const isPendingInner = isSubmitting || isPending;
   const isSuccessfulInner =
