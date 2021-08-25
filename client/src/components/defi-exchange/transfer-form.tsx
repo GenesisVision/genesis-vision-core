@@ -8,19 +8,24 @@ import { DialogBottom } from "shared/dialog/dialog-bottom";
 import { DialogButtons } from "shared/dialog/dialog-buttons";
 import { SubmitButton } from "shared/submit-button/submit-button";
 import { HookFormWalletSelect } from "shared/wallet-select/wallet-select";
+import SimpleInputAmountField from "shared/input-amount-field/simple-input-amount-field";
 
 const _TransferForm: React.FC = () => {
   const form = useForm({
+    defaultValues: {
+      from: "b07bf947-9343-4d1c-93ba-0aa1509c7265",
+      to: "68623450-fe0a-4fdc-bacf-d962cb7cd25a"
+    },
     mode: "onChange"
   });
 
   return (
     <HookForm form={form} onSubmit={() => {}}>
-      <DialogTop title={"Defi exchange"}>
+      <DialogTop title={"Exchange"}>
         <Row size={"large"}>
           <HookFormWalletSelect
             onClickUpdate={() => {}}
-            name={"name"}
+            name={"from"}
             label={"From"}
             items={[
               {
@@ -98,7 +103,7 @@ const _TransferForm: React.FC = () => {
       <DialogBottom>
         <HookFormWalletSelect
           onClickUpdate={() => {}}
-          name={"name"}
+          name={"to"}
           label={"To"}
           items={[
             {
@@ -172,18 +177,12 @@ const _TransferForm: React.FC = () => {
           items={destinationItemsWithoutCurrent}
           sourceType={destinationType}
         /> */}
-        {/* <InputAmountField
-          name={TRANSFER_FORM_FIELDS.amount}
-          label={t("transfer:amount")}
-          currency={selectedSourceItem.currency}
-          setMax={setMax}
-          isAllowed={isAmountAllow(sourceItems, sourceId)}
-          rules={amountRules({
-            t,
-            available,
-            currency
-          })}
-        /> */}
+        <SimpleInputAmountField
+          name={"amount"}
+          label={"Enter correct amount"}
+          currency={"GVT"}
+          setMax={() => {}}
+        />
         {/* {!!amount &&
           selectedDestinationItem.currency !== selectedSourceItem.currency && (
             <Row>

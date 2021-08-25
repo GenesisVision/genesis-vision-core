@@ -6,6 +6,8 @@ import styled from "styled-components";
 const Container = styled.div`
   width: 360px;
   margin: 0 auto;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const DefiExchangePage = () => {
