@@ -1,3 +1,4 @@
+import { CurrencyInputHeader } from "components/currency-input-header/currency-input-header";
 import * as React from "react";
 import { PopoverContentCardBlock } from "shared/popover/popover-card.block";
 import { Row } from "shared/row/row";
@@ -8,6 +9,7 @@ import { $fontSizeCommon, $paddingXsmall } from "styles/sizes";
 interface Props {
   title?: string | JSX.Element;
   subtitle?: string | JSX.Element;
+  includeSwapHeader?: boolean;
 }
 
 const Subtitle = styled(Row)`
@@ -22,12 +24,13 @@ const Container = styled.div`
 `;
 
 export const DialogTop: React.FC<React.HTMLAttributes<HTMLDivElement> & Props> =
-  ({ title, subtitle, children }) => (
+  ({ title, subtitle, children, includeSwapHeader }) => (
     <PopoverContentCardBlock dark size={"large"} fixed>
       <Container>
         {title && (
-          <Row>
+          <Row style={{ justifyContent: "space-between" }}>
             <h2>{title}</h2>
+            {includeSwapHeader && <CurrencyInputHeader />}
           </Row>
         )}
         {subtitle && <Subtitle size={"small"}>{subtitle}</Subtitle>}

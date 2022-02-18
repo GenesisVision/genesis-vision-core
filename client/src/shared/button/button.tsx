@@ -29,11 +29,14 @@ const _Button: React.FC<IButtonProps> = props => {
     isSuccessful,
     successSymbol = true,
     children,
-    testId
+    testId,
+    flexChildren
   } = props;
   return (
     <StyledButton data-test-id={testId} {...props} type={type}>
-      <Label isSuccessful={isSuccessful}>{children}</Label>
+      <Label flexChildren={flexChildren} isSuccessful={isSuccessful}>
+        {children}
+      </Label>
       {successSymbol && (
         <SuccessMark isSuccessful={isSuccessful}>✔</SuccessMark>
       )}

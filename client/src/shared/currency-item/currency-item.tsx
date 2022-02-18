@@ -4,6 +4,7 @@ import ActivePopup from "shared/active/active-popup";
 import WalletImage from "shared/avatar/wallet-image/wallet-image";
 import { RowItem } from "shared/row-item/row-item";
 import { Row } from "shared/row/row";
+import { Text } from "shared/text/text";
 import styled, { css } from "styled-components";
 import { $rowColor, $textLightColor } from "styles/colors";
 import { fontSize, height, width } from "styles/mixins";
@@ -33,6 +34,7 @@ export interface ICurrencyItemProps extends ThemePropsType {
   small?: boolean;
   logo?: string;
   name?: string | CurrencyEnum;
+  showSymbolWithName?: boolean;
 }
 
 const Icon = styled(RowItem)<{ small?: boolean }>`
@@ -88,6 +90,27 @@ const Rate = styled.div<ThemePropsType>`
   ${themeStyle};
 `;
 
+const CurrencyNameWithSymbol = ({
+  symbol,
+  name
+}: {
+  symbol: string;
+  name: string;
+}) => {
+  return (
+    <>
+      <Row>
+        <Name>{symbol}</Name>
+      </Row>
+      <Row size={"zero"}>
+        <Text muted size={"xsmall"}>
+          {name}
+        </Text>
+      </Row>
+    </>
+  );
+};
+
 const _CurrencyItem: React.FC<ICurrencyItemProps> = ({
   url,
   symbol,
@@ -98,7 +121,8 @@ const _CurrencyItem: React.FC<ICurrencyItemProps> = ({
   small,
   theme = Themes.DARK,
   clickable = true,
-  showTitle = true
+  showTitle = true,
+  showSymbolWithName = false
 }) => {
   const [isOpenPopup, setOpenPopup, setClosePopup] = useIsOpen();
   const openPopup = useCallback(
@@ -122,6 +146,8 @@ const _CurrencyItem: React.FC<ICurrencyItemProps> = ({
           <RowItem>
             {big ? (
               <BigName theme={theme}>{name}</BigName>
+            ) : showSymbolWithName ? (
+              <CurrencyNameWithSymbol symbol={symbol!} name={name} />
             ) : (
               <Name theme={theme}>{name}</Name>
             )}

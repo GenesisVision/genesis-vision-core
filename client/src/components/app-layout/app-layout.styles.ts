@@ -39,6 +39,7 @@ export const appWrapperStyles = css`
 export const appMainStyles = css`
   ${appHorizontalPaddings}
   padding-bottom: ${2 * $paddingBigMobile + $fontSizeCommonMobile}px;
+  padding-top: ${$paddingBigMobile + $fontSizeCommonMobile}px;
 
   ${mediaBreakpointLandscapePhone(`
     padding-bottom: ${2 * $paddingBig + $fontSizeCommon}px;

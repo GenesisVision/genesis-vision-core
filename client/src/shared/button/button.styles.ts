@@ -37,6 +37,7 @@ export const LabelStyles = {
 
 export const LabelDynamicStyles = css`
   opacity: ${({ isSuccessful }: ILabelProps) => (isSuccessful ? 0 : 1)};
+  ${({ flexChildren }: ILabelProps) => flexChildren && "display: flex;"}
 `;
 
 export const SuccessMarkStyles = {
@@ -83,6 +84,7 @@ export const ButtonDynamicStyles = css`
       case "text":
         switch (color) {
           case "primary":
+          case "success":
             return $primaryColor;
           case "danger":
             return $negativeColor;
@@ -101,6 +103,7 @@ export const ButtonDynamicStyles = css`
           case "danger":
             return getBoxShadowValue(`${pSBC(-0.9, $negativeColor)}50`);
           case "primary":
+          case "success":
             return getBoxShadowValue(`${pSBC(-0.9, $primaryColor)}50`);
           case "secondary":
             return getBoxShadowValue(`${pSBC(-0.9, $secondaryColor)}50`);
@@ -117,6 +120,8 @@ export const ButtonDynamicStyles = css`
     switch (variant) {
       case "contained":
         switch (color) {
+          case "success":
+            return $positiveColor;
           case "danger":
             return $negativeColor;
           case "primary":
@@ -142,6 +147,7 @@ export const ButtonDynamicStyles = css`
           case "danger":
             return $negativeColor;
           case "primary":
+          case "success":
             return $primaryColor;
           case "primary-dark":
             return $primaryColor;
@@ -154,6 +160,7 @@ export const ButtonDynamicStyles = css`
           case "danger":
             return $negativeColor;
           case "primary":
+          case "success":
             return $primaryColor;
           case "primary-dark":
             return $primaryColor;

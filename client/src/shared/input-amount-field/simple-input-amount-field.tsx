@@ -8,6 +8,7 @@ import {
   ISimpleNumberFieldProps,
   SimpleNumberField
 } from "shared/simple-fields/simple-number-field";
+import { SizesType } from "utils/types";
 
 const _SimpleInputAmountField: React.FC<ISimpleInputAmountFieldProps> = ({
   disabled,
@@ -19,6 +20,7 @@ const _SimpleInputAmountField: React.FC<ISimpleInputAmountFieldProps> = ({
   label,
   currency,
   setMax,
+  size = "large",
   ...props
 }) => {
   const [externalDirty, setExternalDirty] = useIsOpen(externalDirtyProp);
@@ -30,7 +32,7 @@ const _SimpleInputAmountField: React.FC<ISimpleInputAmountFieldProps> = ({
     []
   );
   return (
-    <Row size={"large"} hide={hide} wide={wide}>
+    <Row size={size} hide={hide} wide={wide}>
       <SimpleNumberField
         {...props}
         disabled={disabled}
@@ -76,6 +78,7 @@ const _SimpleInputAmountField: React.FC<ISimpleInputAmountFieldProps> = ({
 export interface ISimpleInputAmountFieldProps extends ISimpleNumberFieldProps {
   hide?: boolean;
   wide?: boolean;
+  size?: SizesType;
   name: string;
   label?: React.ReactNode;
   currency: string;

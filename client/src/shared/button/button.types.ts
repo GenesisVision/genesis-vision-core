@@ -12,7 +12,8 @@ export interface IButtonProps
   id?: string;
   title?: string;
   variant?: "text" | "outlined" | "contained";
-  color?: "primary" | "secondary" | "primary-dark" | "danger";
+  color?: "primary" | "secondary" | "primary-dark" | "danger" | "success";
+  flexChildren?: boolean;
   type?: "button" | "submit";
   className?: string;
   disabled?: boolean;
@@ -24,6 +25,7 @@ export interface IButtonProps
 
 export interface ILabelProps {
   isSuccessful?: boolean;
+  flexChildren?: boolean;
 }
 
 export interface ISuccessMarkProps {
