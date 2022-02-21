@@ -39,6 +39,7 @@ import { RowItem } from "shared/row-item/row-item";
 import { $backgroundColor } from "styles/colors";
 import { DefaultBlock } from "shared/default-block/default-block";
 import ProgressCircles from "shared/progress-circles/progress-circles";
+import { AdvancedSwapDetails } from "components/advanced-swap-details/advanced-swap-details";
 
 const SwapButtonWrapper = styled.div`
   position: absolute;
@@ -481,9 +482,7 @@ export default function Swap() {
           <ProgressCircles steps={[approval === ApprovalState.APPROVED]} />
         </Row>
       )}
-      {/* {trade && (
-         <AdvancedSwapDetailsDropdown trade={trade} />
-      )} */}
+      {trade && <AdvancedSwapDetails trade={trade} />}
       <SwapWarningPopup
         open={swapWarningModalIsOpen}
         swapCurrency={swapWarningCurrency}
