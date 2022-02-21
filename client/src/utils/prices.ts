@@ -90,3 +90,19 @@ export function warningSeverity(
   if (!priceImpact?.lessThan(ALLOWED_PRICE_IMPACT_LOW)) return 1;
   return 0;
 }
+
+export function formatExecutionPrice(
+  trade?: Trade,
+  inverted?: boolean
+): string {
+  if (!trade) {
+    return "";
+  }
+  return inverted
+    ? `${trade.executionPrice.invert().toSignificant(6)} ${
+        trade.inputAmount.currency.symbol
+      } / ${trade.outputAmount.currency.symbol}`
+    : `${trade.executionPrice.toSignificant(6)} ${
+        trade.outputAmount.currency.symbol
+      } / ${trade.inputAmount.currency.symbol}`;
+}

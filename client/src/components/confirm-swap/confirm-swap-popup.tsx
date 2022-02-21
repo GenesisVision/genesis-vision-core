@@ -1,5 +1,6 @@
 import { Trade } from "@pancakeswap/sdk";
 import React from "react";
+import { useCallback } from "react";
 import Dialog, { IDialogProps } from "shared/dialog/dialog";
 import ConfirmSwap from "./confirm-swap";
 
@@ -12,7 +13,7 @@ interface ConfirmSwapPopupProps extends IDialogProps {
   onAcceptChanges: () => void;
   onConfirm: () => void;
   swapErrorMessage?: string;
-  customOnDismiss?: () => void;
+  customOnClose?: () => void;
 }
 
 const _ConfirmSwapPopup: React.FC<ConfirmSwapPopupProps> = ({
@@ -23,13 +24,19 @@ const _ConfirmSwapPopup: React.FC<ConfirmSwapPopupProps> = ({
   onConfirm,
   onClose,
   open,
-  customOnDismiss,
+  customOnClose,
   swapErrorMessage,
   attemptingTxn,
   txHash
 }) => {
+  const handleClose = useCallback(() => {
+    if (customOnClose) {
+      customOnClose();
+    }
+    onClose();
+  }, [customOnClose, onClose]);
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={handleClose}>
       <ConfirmSwap
         onClose={onClose}
         trade={trade}
@@ -40,7 +47,6 @@ const _ConfirmSwapPopup: React.FC<ConfirmSwapPopupProps> = ({
         allowedSlippage={allowedSlippage}
         onConfirm={onConfirm}
         swapErrorMessage={swapErrorMessage}
-        customOnDismiss={customOnDismiss}
       />
     </Dialog>
   );

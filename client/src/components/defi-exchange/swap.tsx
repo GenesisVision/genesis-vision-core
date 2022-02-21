@@ -500,7 +500,7 @@ export default function Swap() {
         allowedSlippage={allowedSlippage}
         onConfirm={handleSwap}
         swapErrorMessage={swapErrorMessage}
-        customOnDismiss={handleConfirmDismiss}
+        customOnClose={handleConfirmDismiss}
       />
     </DialogTop>
   );

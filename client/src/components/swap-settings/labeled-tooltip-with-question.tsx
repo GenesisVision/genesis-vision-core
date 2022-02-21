@@ -1,10 +1,11 @@
 import { Text } from "shared/text/text";
 import HelpButton from "shared/help-button/help-button";
 import { TooltipLabel } from "shared/tooltip-label/tooltip-label";
+import { RowItem } from "shared/row-item/row-item";
 
 interface Props {
-  tooltipText: string;
   label: string;
+  tooltipText: string | JSX.Element;
 }
 
 export const LabeledTooltipWithQuestion: React.FC<Props> = ({
@@ -18,7 +19,10 @@ export const LabeledTooltipWithQuestion: React.FC<Props> = ({
         // @ts-ignore
         labelText={
           <>
-            {label} <HelpButton muted />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <RowItem size={"xsmall"}>{label}</RowItem>
+              <HelpButton muted />
+            </div>
           </>
         }
       />

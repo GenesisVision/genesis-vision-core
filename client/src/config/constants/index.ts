@@ -66,6 +66,8 @@ export const MIN_BNB: JSBI = JSBI.exponentiate(
   JSBI.BigInt(16)
 ); // .01 BNB
 
+// one basis point
+export const ONE_BIPS = new Percent(JSBI.BigInt(1), JSBI.BigInt(10000));
 export const BIPS_BASE = JSBI.BigInt(10000);
 
 // if the price slippage exceeds this number, force the user to type 'confirm' to execute
