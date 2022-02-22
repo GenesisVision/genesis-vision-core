@@ -11,6 +11,7 @@ export interface IPropsGvInput {
   onKeyDown?: (e: any) => any;
   bottomLine?: boolean;
   correct?: boolean;
+  incorrect?: boolean;
   adornment?: React.ReactNode;
   label?: string | React.ReactNode;
   value?: string | number;
@@ -64,9 +65,15 @@ export const GVInputStyles = css`
       if ((touched && error) || focused) return "scaleX(1)";
       return "scaleX(0)";
     }};
-    border-bottom-color: ${({ correct, touched, error }: IPropsGvInput) => {
+    border-bottom-color: ${({
+      correct,
+      touched,
+      error,
+      incorrect
+    }: IPropsGvInput) => {
       if (touched && error) return $negativeColor;
       if (correct) return $positiveColor;
+      if (incorrect) return $negativeColor;
       return $textColor;
     }};
   }

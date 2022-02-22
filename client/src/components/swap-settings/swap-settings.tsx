@@ -6,6 +6,7 @@ import GasSettings from "./gas-settings";
 import { LabeledTooltipWithQuestion } from "./labeled-tooltip-with-question";
 import GVSwitch from "shared/gv-switch";
 import { Row } from "shared/row/row";
+import { TransactionSettings } from "./transactions-settings";
 
 const _SwapSettings: React.FC = () => {
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly();
@@ -16,6 +17,7 @@ const _SwapSettings: React.FC = () => {
       <DialogTop title={"Settings"} />
       <DialogBottom>
         <GasSettings />
+        <TransactionSettings />
         <Row style={{ justifyContent: "space-between" }}>
           <LabeledTooltipWithQuestion
             tooltipText={"Restricts swaps to direct pairs only."}

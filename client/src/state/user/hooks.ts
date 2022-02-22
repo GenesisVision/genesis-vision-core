@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "state";
 import {
   updateGasPrice,
+  updateUserDeadline,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance
 } from "./actions";
@@ -78,4 +79,22 @@ export function useGasPrice(): string {
   return chainId === ChainId.MAINNET.toString()
     ? userGas
     : GAS_PRICE_GWEI.testnet;
+}
+
+export function useUserTransactionTTL(): [number, (slippage: number) => void] {
+  const dispatch = useDispatch();
+  const userDeadline = useSelector<AppState, AppState["user"]["userDeadline"]>(
+    state => {
+      return state.user.userDeadline;
+    }
+  );
+
+  const setUserDeadline = useCallback(
+    (deadline: number) => {
+      dispatch(updateUserDeadline({ userDeadline: deadline }));
+    },
+    [dispatch]
+  );
+
+  return [userDeadline, setUserDeadline];
 }
