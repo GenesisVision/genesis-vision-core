@@ -40,7 +40,6 @@ import { $backgroundColor } from "styles/colors";
 import { DefaultBlock } from "shared/default-block/default-block";
 import ProgressCircles from "shared/progress-circles/progress-circles";
 import { AdvancedSwapDetails } from "components/advanced-swap-details/advanced-swap-details";
-import { useAlerts } from "state/alerts/hooks";
 
 const SwapButtonWrapper = styled.div`
   position: absolute;
@@ -311,30 +310,8 @@ export default function Swap() {
   const [confirmModalIsOpen, setOpenConfirmModal, setCloseConfirmModal] =
     useIsOpen();
 
-  const { successAlert, errorAlert } = useAlerts();
-
   return (
     <DialogTop title={"Exchange"} includeSwapHeader>
-      <Button
-        onClick={() =>
-          successAlert(
-            "Transaction receipt"
-            // <ToastDescriptionWithTx txHash="0x4d06ebdeef3fc4a50d3e09344378e850714ca562ac22a2980090d280d6102cbf" />
-          )
-        }
-      >
-        toast success
-      </Button>
-      <Button
-        onClick={() =>
-          errorAlert(
-            "Transaction receipt"
-            // <ToastDescriptionWithTx txHash="0x4d06ebdeef3fc4a50d3e09344378e850714ca562ac22a2980090d280d6102cbf" />
-          )
-        }
-      >
-        toast error
-      </Button>
       <CurrencyInputPanel
         label={
           independentField === Field.OUTPUT && !showWrap && trade

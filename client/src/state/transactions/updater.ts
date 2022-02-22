@@ -72,10 +72,15 @@ export default function Updater(): null {
               );
 
               const alert = receipt.status === 1 ? successAlert : errorAlert;
+              const transactionMessage =
+                receipt.status === 1
+                  ? "Transaction was successful"
+                  : "Transaction failed";
               // alert(
               //   t("Transaction receipt"),
               //   <ToastDescriptionWithTx txHash={receipt.transactionHash} />
               // );
+              alert(transactionMessage);
             } else {
               dispatch(
                 checkedTransaction({ chainId, hash, blockNumber: currentBlock })
