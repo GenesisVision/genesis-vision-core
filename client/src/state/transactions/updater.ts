@@ -1,6 +1,7 @@
 import useActiveWeb3React from "hooks/web3active.hook";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAlerts } from "state/alerts/hooks";
 import { useBlock } from "state/block/hooks";
 import { AppDispatch, AppState } from "../index";
 import { checkedTransaction, finalizeTransaction } from "./actions";
@@ -28,6 +29,8 @@ export function shouldCheck(
 
 export default function Updater(): null {
   const { library, chainId } = useActiveWeb3React();
+
+  const { successAlert, errorAlert } = useAlerts();
 
   const { currentBlock } = useBlock();
 
@@ -67,6 +70,12 @@ export default function Updater(): null {
                   }
                 })
               );
+
+              const alert = receipt.status === 1 ? successAlert : errorAlert;
+              // alert(
+              //   t("Transaction receipt"),
+              //   <ToastDescriptionWithTx txHash={receipt.transactionHash} />
+              // );
             } else {
               dispatch(
                 checkedTransaction({ chainId, hash, blockNumber: currentBlock })
@@ -77,7 +86,15 @@ export default function Updater(): null {
             console.error(`failed to check transaction hash: ${hash}`, error);
           });
       });
-  }, [chainId, library, transactions, currentBlock, dispatch]);
+  }, [
+    chainId,
+    library,
+    transactions,
+    currentBlock,
+    dispatch,
+    successAlert,
+    errorAlert
+  ]);
 
   return null;
 }

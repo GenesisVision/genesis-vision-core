@@ -16,7 +16,7 @@ const App = () => {
     <AppLayout>
       <Switch>
         <Route exact path="/" component={CreateDefiFundPage} />
-        <Route path="/exchange" component={DefiExchangePage} />
+        <Route path="/swap" component={DefiExchangePage} />
         <Route render={() => <div>404</div>} />
       </Switch>
       <AlertMessageList />

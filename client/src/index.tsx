@@ -11,7 +11,6 @@ import store from "state";
 
 import { createGlobalStyle } from "styled-components";
 import { RootStyle } from "styles/root-styles";
-import { AlertContextProvider } from "contexts/alerts.context";
 
 function Updaters() {
   return (
@@ -35,22 +34,20 @@ const GlobalStyle = createGlobalStyle`
 ReactDOM.render(
   <Web3ReactProvider getLibrary={getLibrary}>
     <Provider store={store}>
-      <AlertContextProvider>
-        <Router>
-          <SWRConfig
-            value={{
-              fetcher: (resource, init) =>
-                fetch(process.env.REACT_APP_API_URL + resource, init).then(
-                  res => res.json()
-                )
-            }}
-          >
-            <Updaters />
-            <App />
-            <GlobalStyle />
-          </SWRConfig>
-        </Router>
-      </AlertContextProvider>
+      <Router>
+        <SWRConfig
+          value={{
+            fetcher: (resource, init) =>
+              fetch(process.env.REACT_APP_API_URL + resource, init).then(res =>
+                res.json()
+              )
+          }}
+        >
+          <Updaters />
+          <App />
+          <GlobalStyle />
+        </SWRConfig>
+      </Router>
     </Provider>
   </Web3ReactProvider>,
   document.getElementById("root")

@@ -5,7 +5,8 @@ export enum ALERT_MESSAGE {
 }
 
 export type IMessage = {
-  type?: ALERT_MESSAGE;
+  alertType?: ALERT_MESSAGE;
   id?: string;
   text?: string;
+  content?: React.ReactNode;
 };

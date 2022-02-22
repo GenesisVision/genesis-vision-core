@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { save, load } from "redux-localstorage-simple";
 import swap from "./swap/reducer";
 import multicall from "./multicall/reducer";
+import alerts from "./alerts/reducer";
 import blockReducer from "./block";
 import cloneDeep from "lodash/cloneDeep";
 import user, { initialState as userInitialState } from "./user/reducer";
@@ -28,7 +29,8 @@ const store = configureStore({
     multicall,
     swap,
     user,
-    transactions
+    transactions,
+    alerts
   },
   middleware: getDefaultMiddleware => [
     ...getDefaultMiddleware({ thunk: true }),

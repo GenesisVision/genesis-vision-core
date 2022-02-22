@@ -37,8 +37,6 @@ const _SwapTransactions: React.FC = () => {
     "desc"
   );
 
-  console.log({ allTransactions });
-
   const pending = sortedRecentTransactions.filter(tx => !tx.receipt);
   const confirmed = sortedRecentTransactions.filter(tx => tx.receipt);
 

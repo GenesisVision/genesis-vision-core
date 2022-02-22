@@ -1,8 +1,8 @@
 import { useWeb3React } from "@web3-react/core";
 import { NoEthereumProviderError } from "@web3-react/injected-connector";
 import { useCallback, useState } from "react";
+import { useAlerts } from "state/alerts/hooks";
 import { metamaskConnector } from "utils/web3";
-import { useAlerts } from "./alerts.hook";
 
 export const useMetamaskConnect = (): {
   connectMetamask: () => void;

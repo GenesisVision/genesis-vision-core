@@ -86,7 +86,7 @@ const _AlertMessage: React.FC<Props> = ({ message, onClick }) => {
   );
 
   return (
-    <Container type={message.type}>
+    <Container type={message.alertType}>
       <Text>{message.text}</Text>
       <CloseContainer onClick={handleClick}>
         <CloseButton>+</CloseButton>

@@ -1,7 +1,13 @@
-import { AlertsContext } from "contexts/alerts.context";
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button } from "shared/button/button";
+import { AppState } from "state";
+import {
+  removeAllMessages,
+  removeMessage as removeMessageAction
+} from "state/alerts/reducer";
 import styled from "styled-components";
 import { $paddingSmall } from "styles/sizes";
 import AlertMessage from "./alert-message";
@@ -23,14 +29,27 @@ const List = styled.div`
 `;
 
 const _AlertMessageList: React.FC = () => {
-  const { messages, removeAllMessages, removeMessage } =
-    useContext(AlertsContext);
+  const messages = useSelector<AppState, AppState["alerts"]["alerts"]>(
+    state => state.alerts.alerts
+  );
+  const dispatch = useDispatch();
+
+  const removeMessage = useCallback(
+    id => {
+      dispatch(removeMessageAction(id));
+    },
+    [dispatch]
+  );
+
+  const clearAllMessages = useCallback(() => {
+    dispatch(removeAllMessages());
+  }, []);
 
   const history = useHistory();
 
   useEffect(() => {
     const handleChange = () => {
-      removeAllMessages();
+      clearAllMessages();
     };
     const unlisten = history.listen(handleChange);
     return unlisten;
@@ -42,7 +61,7 @@ const _AlertMessageList: React.FC = () => {
 
   if (messages.length > 1) {
     children.push(
-      <Button color="primary" onClick={removeAllMessages}>
+      <Button color="primary" onClick={clearAllMessages}>
         Clear all
       </Button>
     );
